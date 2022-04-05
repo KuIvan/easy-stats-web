@@ -3,7 +3,7 @@ import AuthLayout from 'src/components/templates/AuthLayout'
 import AuthPage from 'src/components/pages/AuthPage'
 import { Children } from 'src/types'
 
-export default function Home(): JSX.Element {
+export default function Index(): JSX.Element {
   return (
     <>
       <Head>
@@ -16,7 +16,7 @@ export default function Home(): JSX.Element {
   )
 }
 
-Home.getLayout = function getLayout(page: Children) {
+Index.getLayout = function getLayout(page: Children) {
   return (
     <AuthLayout>
       {page}
