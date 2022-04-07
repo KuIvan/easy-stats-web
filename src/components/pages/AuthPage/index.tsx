@@ -11,10 +11,9 @@ export default function AuthPage(): JSX.Element {
       item
       xs={12}
       sx={({ palette}) => ({
-        marginTop: 4,
-        backgroundColor: palette.primary.main,
         borderRadius: 4,
         padding: 6,
+        zIndex: 1,
       })}
     >
       <Grid

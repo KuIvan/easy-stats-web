@@ -9,11 +9,24 @@ export default function Header(): JSX.Element {
         background: palette.primary.main
       })}
     >
-      <Container maxWidth="md">
-        <Toolbar disableGutters>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Link passHref href="/">
+      <Container
+        maxWidth="md"
+      >
+        <Toolbar
+          disableGutters
+        >
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Grid
+              item
+            >
+              <Link
+                passHref
+                href="/"
+              >
                 <a>
                   <img
                     src="icons/default/logo1.png"
