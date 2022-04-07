@@ -20,8 +20,6 @@ export default function DefaultLandingBlock({ img, title, text, order }: Default
     >
       <Grid
         item
-        container
-        justifyContent="flex"
         xs={12}
         md={6}
         sx={{
@@ -31,6 +29,8 @@ export default function DefaultLandingBlock({ img, title, text, order }: Default
           },
           cursor: 'pointer',
           '@keyframes wobble': wobble,
+          display: 'flex',
+          justifyContent: 'center'
         }}
       >
         <Image
