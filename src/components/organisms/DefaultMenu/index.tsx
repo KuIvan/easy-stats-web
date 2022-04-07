@@ -21,7 +21,7 @@ export default function DefaultMenu(): JSX.Element {
         container
         justifyContent="center"
         alignItems="center"
-        sx={{ minHeight: 780 }}
+        sx={{ minHeight: 960 }}
       >
         <Grid
           item

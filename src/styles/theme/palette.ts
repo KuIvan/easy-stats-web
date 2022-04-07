@@ -6,15 +6,18 @@ const colorsCommon: PaletteColorsCommon = {
   white: {
     main: '#F4F5F6',
   },
+  black: {
+    main: '#000000',
+  },
 };
 
 const colorsPrimary = {
-  main: '#00008B',
+  main: '#093272',
   alter: '#00008B',
 };
 
 const colorsSecondary = {
-  main: '#CB7F07',
+  main: '#EE9E20',
   alter: '#00008B',
 };
 
