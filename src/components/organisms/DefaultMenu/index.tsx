@@ -4,28 +4,25 @@ import map from 'lodash/map'
 import { useRouter } from 'next/router'
 // src
 import DefaultMenuTitle from 'src/components/atoms/DefaultMenuTitle'
+import { menuItems } from 'src/components/constants'
 
 export default function DefaultMenu(): JSX.Element {
   const router = useRouter()
-
-  const menuItems = [
-    { title: "Home", link: '/home' },
-    { title: "My Stats", link: '/my-stats' },
-    { title: "My Teams", link: '/my-teams' },
-    { title: "My Tournaments", link: '/my-tournaments' },
-  ]
 
   return (
     <Container maxWidth="xl">
       <Grid
         container
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
         sx={{ minHeight: 960 }}
       >
         <Grid
           item
           xs={6}
+          sx={{
+            zIndex: 1
+          }}
         >
           <Grid
             container
@@ -42,24 +39,24 @@ export default function DefaultMenu(): JSX.Element {
             ))}
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={6}
-        >
-          <Grid
-            container
-            justifyContent="flex-end"
-          >
-            <img
-              className="logo"
-              src="icons/default/logo1.png"
-              alt="Logo"
-              width={180}
-              height={155}
-              style={{ objectFit: 'cover' }}
-            />
-          </Grid>
-        </Grid>
+        {/*<Grid*/}
+        {/*  item*/}
+        {/*  xs={6}*/}
+        {/*>*/}
+        {/*  <Grid*/}
+        {/*    container*/}
+        {/*    justifyContent="flex-end"*/}
+        {/*  >*/}
+        {/*    <img*/}
+        {/*      className="logo"*/}
+        {/*      src="icons/default/logo1.png"*/}
+        {/*      alt="Logo"*/}
+        {/*      width={180}*/}
+        {/*      height={155}*/}
+        {/*      style={{ objectFit: 'cover' }}*/}
+        {/*    />*/}
+        {/*  </Grid>*/}
+        {/*</Grid>*/}
       </Grid>
     </Container>
   )

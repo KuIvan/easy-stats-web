@@ -1,5 +1,9 @@
+import React from 'react'
 import { Container, AppBar, Toolbar, Grid } from '@mui/material'
-import Link from 'next/link'
+import map from 'lodash/map'
+// src
+import { menuItems } from 'src/components/constants'
+import DefaultMenuTitle from 'src/components/atoms/DefaultMenuTitle'
 
 export default function Header(): JSX.Element {
   return (
@@ -10,7 +14,7 @@ export default function Header(): JSX.Element {
       })}
     >
       <Container
-        maxWidth="md"
+        maxWidth="xl"
       >
         <Toolbar
           disableGutters
@@ -20,24 +24,16 @@ export default function Header(): JSX.Element {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Grid
-              item
-            >
-              <Link
-                passHref
-                href="/"
-              >
-                <a>
-                  <img
-                    src="icons/default/logo1.png"
-                    alt="Logo"
-                    width={80}
-                    height={55}
-                    style={{ objectFit: 'cover' }}
-                  />
-                </a>
-              </Link>
-            </Grid>
+            {map(menuItems, (item, index) => (
+              <Grid item key={index} xs={2}>
+                <DefaultMenuTitle
+                  title={item.title}
+                  isHighlighted={false}
+                  link={item.link}
+                  image={item.image}
+                />
+              </Grid>
+            ))}
           </Grid>
         </Toolbar>
       </Container>

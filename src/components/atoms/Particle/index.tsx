@@ -2,7 +2,19 @@ import Particles from "react-tsparticles";
 // @ts-ignore
 import { loadFull } from "tsparticles";
 
-export default function Particle(): JSX.Element {
+interface ParticleProps {
+  isFullScreen?: boolean
+  position?: "absolute" | "fixed" | "relative" | "static"
+  width?: string
+  height?: string
+}
+
+export default function Particle({
+  isFullScreen = false,
+  position = 'fixed',
+  width = '100%',
+  height = '100%',
+}: ParticleProps): JSX.Element {
 
   // const particlesInit = async (main: any) => {
   //   // await loadFull(main);
@@ -15,6 +27,11 @@ export default function Particle(): JSX.Element {
   return (
     <Particles
       id="custom-id"
+      width={width}
+      height={height}
+      style={{
+        position: position
+      }}
       // init={particlesInit}
       // loaded={particlesLoaded}
       options={
@@ -41,7 +58,7 @@ export default function Particle(): JSX.Element {
             "enable": false
           },
           "fullScreen": {
-            "enable": true,
+            "enable": isFullScreen,
             "zIndex": -1
           },
           "detectRetina": true,

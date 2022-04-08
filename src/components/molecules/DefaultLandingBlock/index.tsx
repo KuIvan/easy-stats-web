@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, Typography } from '@mui/material'
 import Image from 'next/image'
-import { wobble } from 'react-animations'
+import { zoomIn } from 'react-animations'
 // src
 
 interface DefaultLandingBlockProps {
@@ -9,9 +9,25 @@ interface DefaultLandingBlockProps {
   title: string
   text: string
   order: string
+  scrollY: number
 }
 
-export default function DefaultLandingBlock({ img, title, text, order }: DefaultLandingBlockProps): JSX.Element {
+export default function DefaultLandingBlock({ img, title, text, order, scrollY }: DefaultLandingBlockProps): JSX.Element {
+  const [play, setPlay] = useState(false)
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  function handleScroll() {
+    if (window.scrollY > scrollY && !play) {
+      setPlay(true)
+    }
+  }
+
   return (
     <Grid
       container
@@ -23,12 +39,11 @@ export default function DefaultLandingBlock({ img, title, text, order }: Default
         xs={12}
         md={6}
         sx={{
-          '&:hover': {
-            animation: 'wobble 5s infinite',
-            animationTimingFunction: 'linear',
-          },
+          animation: 'zoomIn 2s',
+          animationTimingFunction: 'linear',
+          animationPlayState: play ? 'running' : 'paused',
           cursor: 'pointer',
-          '@keyframes wobble': wobble,
+          '@keyframes zoomIn': zoomIn,
           display: 'flex',
           justifyContent: 'center'
         }}
