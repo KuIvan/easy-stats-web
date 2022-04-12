@@ -18,7 +18,7 @@ const colorsPrimary = {
 
 const colorsSecondary = {
   main: '#EE9E20',
-  alter: '#00008B',
+  alter: '#FCC874',
 };
 
 const palette = {

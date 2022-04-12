@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Form, Field } from 'react-final-form'
 import { useSnackbar } from 'notistack'
-import { Button, Grid } from '@mui/material'
+import { Button, CircularProgress, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import get from 'lodash/get'
 // src
@@ -88,7 +88,7 @@ export default function SignInFormLayout(): JSX.Element {
                 type="submit"
                 disabled={isLoading}
               >
-                Sign In
+                {isLoading ? <CircularProgress size={24}/> : "Sign In"}
               </Button>
             </Grid>
           </Grid>

@@ -7,6 +7,35 @@ export const GET_PLAYER_GAMES = gql`
       id
       status
       gameDay
+      gamesSquads {
+        id
+        status
+        goals
+        seasonsSquad {
+          id
+          team {
+            id
+            name
+            teamPhoto
+          }
+        }
+      }
+      stage {
+        id
+        season {
+          id
+          finishedAt
+          startedAt
+          league {
+            id
+            name
+            tournament {
+              id
+              name
+            }
+          }
+        } 
+      }
     }
   }
 }

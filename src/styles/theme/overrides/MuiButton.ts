@@ -5,5 +5,10 @@ export default {
     containedSecondary: {
       color: palette.system.white.main,
     },
-  },
+    "root": {
+      "&.Mui-disabled": {
+        backgroundColor: palette.secondary.alter
+      }
+    }
+  }
 }

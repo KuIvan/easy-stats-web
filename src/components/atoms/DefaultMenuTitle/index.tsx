@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Typography, useMediaQuery } from '@mui/material'
 import Link from 'next/link'
 import Image from 'next/image'
-import { slideInRight } from 'react-animations'
+import { bounceIn } from 'react-animations'
 import { Breakpoints } from '@mui/system/createTheme/createBreakpoints'
 // src
 import palette from 'src/styles/theme/palette'
@@ -15,7 +15,7 @@ interface DefaultMenuTitleProps {
 }
 
 export default function DefaultMenuTitle({ title, isHighlighted, link, image = null }: DefaultMenuTitleProps): JSX.Element {
-  const isNotMobile = useMediaQuery(({ breakpoints }: { breakpoints: Breakpoints }) => breakpoints.up('xl'));
+  const upXL = useMediaQuery(({ breakpoints }: { breakpoints: Breakpoints }) => breakpoints.up('xl'));
 
   return (
     <Link passHref href={link}>
@@ -26,16 +26,17 @@ export default function DefaultMenuTitle({ title, isHighlighted, link, image = n
               container
               alignItems="center"
               spacing={1}
+              justifyContent={{ xs: 'center', xl: 'flex-start' }}
               sx={{
                 '&:hover': {
                   '& .MuiTypography-root ': {
                     color: palette.system.white.main,
                     position: 'relative',
-                    animation: 'slideInRight 1s',
+                    animation: 'bounceIn 1s',
                     animationTimingFunction: 'linear',
                   }
                 },
-                '@keyframes slideInRight': slideInRight,
+                '@keyframes bounceIn': bounceIn,
                 cursor: 'pointer',
               }}
             >
@@ -47,7 +48,7 @@ export default function DefaultMenuTitle({ title, isHighlighted, link, image = n
                   height={30}
                 />
               </Grid>
-              {isNotMobile && (
+              {upXL && (
                 <Grid item>
                   <Typography
                       variant="h6"

@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: { children: Children }): JSX.El
     async function getToken() {
       const token = await setJWTBearerToken()
       if (token && includes(['/'], router.pathname)) {
-        await router.push('/home')
+        await router.push('/about')
       }
     }
 

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Divider, Grid, Typography } from '@mui/material'
+import { Divider, Grid, Typography, useMediaQuery } from '@mui/material'
+import { Breakpoints } from '@mui/system/createTheme/createBreakpoints'
 // src
 
 interface DefaultLandingTitleProps {
@@ -7,6 +8,8 @@ interface DefaultLandingTitleProps {
 }
 
 export default function DefaultLandingTitle({ title }: DefaultLandingTitleProps): JSX.Element {
+  const upMD = useMediaQuery(({ breakpoints }: { breakpoints: Breakpoints }) => breakpoints.up('md'));
+
   return (
     <Grid
       container
@@ -18,7 +21,7 @@ export default function DefaultLandingTitle({ title }: DefaultLandingTitleProps)
         xs={12}
       >
         <Typography
-          variant="h1"
+          variant={upMD ? 'h1' : 'h4'}
           color="primary"
           textAlign="center"
         >
@@ -27,7 +30,7 @@ export default function DefaultLandingTitle({ title }: DefaultLandingTitleProps)
       </Grid>
       <Grid
         item
-        xs={12}
+        xs={10}
         sm={5}
         md={3}
       >

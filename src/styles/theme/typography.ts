@@ -15,7 +15,7 @@ export default {
     fontWeight: 700,
     lineHeight: '64px',
     // fontFamily: 'Pacifico'
-    fontFamily: 'Comfortaa'
+    // fontFamily: 'Comfortaa'
   },
   h4: {
     fontSize: 40,
@@ -29,7 +29,7 @@ export default {
   },
   h6: {
     fontSize: 28,
-    fontWeight: 700,
+    fontWeight: 400,
     lineHeight: '40px',
   },
   h7: {
@@ -46,9 +46,11 @@ export default {
     fontFamily: 'Pacifico'
   },
   subtitle1: {
-    fontSize: 16,
-    fontWeight: 700,
-    lineHeight: '24px',
+    fontSize: 22,
+    fontWeight: 300,
+    lineHeight: '32px',
+    // fontFamily: 'Comfortaa'
+    // fontFamily: 'Pacifico'
   },
   body1: {
     fontSize: 12,
