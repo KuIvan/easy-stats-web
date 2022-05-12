@@ -5,7 +5,6 @@ import MyLastGames from 'src/components/organisms/MyLastGames'
 
 export default function HomePage(): JSX.Element {
 
-
   return (
     <Grid sx={{ marginTop: 10 }}>
       <MyLastGames/>
