@@ -8,7 +8,7 @@ import image from 'public/icons/default/logo2-1.png'
 export const menuItems = [
   { title: "Home", link: '/home', image: home },
   { title: "My Stats", link: '/my-stats', image: stats },
-  { title: "My Teams", link: '/my-teams', image: team },
+  { title: "My Teams", link: '/teams', image: team },
   { title: "Tournaments", link: '/tournaments', image: tournaments },
   { title: "About us", link: '/about', image: about },
 ]
