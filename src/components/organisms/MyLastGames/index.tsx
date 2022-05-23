@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import map from 'lodash/map'
 import get from 'lodash/get'
 // src
-import { GET_PLAYER_GAMES } from 'src/graphql/query/games'
+import { GET_PLAYER_GAMES } from 'src/graphql/queries/games'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import GameCard from 'src/components/molecules/GameCard'
 

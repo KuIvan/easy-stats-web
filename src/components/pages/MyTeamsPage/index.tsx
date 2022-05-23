@@ -1,7 +1,5 @@
 import React from 'react'
 import { Grid } from '@mui/material'
-// src
-// import MyLastGames from 'src/components/organisms/MyLastGames'
 
 export default function MyTeamsPage(): JSX.Element {
 
