@@ -3,9 +3,9 @@ import type { GetServerSidePropsContext } from 'next';
 import DefaultLayout from 'src/components/templates/DefaultLayout'
 import { Children } from 'src/types'
 
-import apolloClient from 'src/lib/apolloClient'
-import { GET_USER_STATISTICS_DATA } from 'src/graphql/queries/user';
-import AddStatisticPage from '../../src/components/pages/AddStatisticGamePage'
+// import apolloClient from 'src/lib/apolloClient'
+// import { GET_USER_STATISTICS_DATA } from 'src/graphql/queries/user';
+import AddStatisticPage from 'src/components/pages/AddStatisticGamePage'
 
 export default function Stats(): JSX.Element {
 
