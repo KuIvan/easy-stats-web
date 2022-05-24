@@ -1,21 +1,15 @@
-// import React, { useState, ChangeEvent } from 'react'
-import React, { useState } from 'react'
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@mui/material'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+
+import { Grid } from '@mui/material'
+import { map } from 'lodash'
+
 //src
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
+import TableStats from '../../molecules/TableStats'
+import ButtonForm from 'src/components/atoms/ButtonForm'
+import { useQuery } from '@apollo/client'
+import { GET_GAME_DATA } from 'src/graphql/queries/game';
+import FormControlStats from '../../atoms/FormControlStats'
 
 interface AddStatisticPageProps {
   gameId: number
@@ -26,46 +20,55 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   const [playerOne, setPlayerOne] = useState<null | number>(null);
   const [playerSecond, setPlayerSecond] = useState<null | number>(null);
   const [action, setAction] = useState<null | string>('');
+  const [menuItems, setMenuItems] = useState<any>(null)
 
-  const handleChange = (event: { target: { value: React.SetStateAction<string>; }; }, setValue: (event: any) => void) => {
-    setValue(event.target.value);
-  };
+  const { loading, error, data } = useQuery(GET_GAME_DATA, {
+    variables: {
+      id: gameId,
+    },
+  })
+  useEffect(() => {
+    setMenuItems(data?.getGame.gamesSquads[0].gamesSquadsPlayer)
+  })
 
-  // NOTE:: ChangeEvent can be useful for you
-  // function handleChange(_event: ChangeEvent<{}>, value: any): void {}
+  function handleChange(_event: ChangeEvent<{}>, setValue: any): void {
+   setValue(_event.target.value)
+  }
 
   const formStatistic = [
     {
       id: 0,
       label: 'Player #1',
-      menuItems: [{ id: 0, value: 17 }, { id: 1, value: 22 }, { id: 2, value: 23 }, { id: 3, value: 10 },],
+      menuItems,
       value: playerOne,
       setValue: setPlayerOne
     },
     {
       id: 1,
       label: 'Action',
-      menuItems: [{ id: 0, value: 'goal' }, { id: 1, value: 'assist' }, { id: 2, value: 'yellow card' }, {
-        id: 3,
-        value: 'red card'
-      },],
+      menuItems: [
+        { id: 0, value: 'goal' },
+        { id: 1, value: 'assist' },
+        { id: 2, value: 'yellow card' },
+        { id: 3, value: 'red card' },
+      ],
       value: action,
       setValue: setAction
     },
     {
       id: 2,
       label: 'Player #2',
-      menuItems: [{ id: 0, value: 17 }, { id: 1, value: 22 }, { id: 2, value: 23 }, { id: 3, value: 10 },],
+      menuItems,
       value: playerSecond,
       setValue: setPlayerSecond
     },
   ]
 
-  function newSelectInput() {
+  function newSelectInput(rows: any) {
     const newArray = [ ...rows, {id: rows.size, initiator: playerOne, addressable: playerSecond, action: action }]
     setAction('')
-    setPlayerOne(0)
-    setPlayerSecond(0)
+    setPlayerOne(null)
+    setPlayerSecond(null)
     return setRows(newArray)
   }
 
@@ -101,64 +104,30 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
           spacing={5}
           justifyContent='center'
         >
-          {formStatistic.map((form) => (
-            <Grid item xs={2}>
-              {/* NOTE:: Create Atom component FormControl */}
-              <Box sx={{ minWidth: 120 }} key={form.id}>
-                <FormControl fullWidth>
-                  <InputLabel>{form.label}</InputLabel>
-                  <Select
-                    value={form.value}
-                    label={form.label}
-                    onChange={(event: any) => handleChange(event, form.setValue)}
-                  >
-                    {form.menuItems.map((item) => (
-                      <MenuItem key={item.id} value={item.value}>{item.value}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <Grid item xs={1}>
-                </Grid>
-              </Box>
-            </Grid>
-          ))}
-          {/* NOTE:: Create Atom component Button */}
+          {map(formStatistic, function(form) {
+            return(
+              <Grid item xs={2} key={form.id}>
+                <FormControlStats form={form} onChangeFunc={handleChange} />
+              </Grid>
+            )
+          })}
           <Grid item xs={1}>
-            <Button
-              onClick={newSelectInput}
-              disabled={(!action || !playerOne) || (playerOne == playerSecond)}
-            >
-              Add
-            </Button>
+            <ButtonForm
+              onClickFunc={newSelectInput}
+              disabled={(!playerOne || !action) || (playerOne === playerSecond)}
+              value='Add Record'
+              array={rows}
+            />
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={6}>
-        {/* NOTE:: Create Organism component Table */}
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">№</TableCell>
-              <TableCell align="left">Player One</TableCell>
-              <TableCell align="left">Action</TableCell>
-              <TableCell align="left">Player Second</TableCell>
-              <TableCell align="left">Delete</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row: any, index: number) => (
-              <TableRow key={row.id}>
-                <TableCell>{index+1}</TableCell>
-                <TableCell align="left">{row.initiator}</TableCell>
-                <TableCell align="left">{row.action}</TableCell>
-                <TableCell align="left">{row.addressable}</TableCell>
-                <TableCell align="left">
-                  <Button onClick={() => {deleteRecord(row.id)}}>Delete</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <TableStats
+          rows={rows}
+          rowName={['№','PlayerOne', 'action', 'PlayerSecond','Delete']}
+          buttonFunc={deleteRecord}
+          buttonValue='Delete'
+        />
       </Grid>
     </Grid>
   )

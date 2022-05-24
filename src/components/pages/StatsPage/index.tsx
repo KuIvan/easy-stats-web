@@ -6,8 +6,6 @@ type Props = {
 };
 export default function StatsPage({ userId }: Props): JSX.Element {
 
-  console.log('userId', userId)
-
   return (
     <Grid sx={{ marginTop: 10 }}>
       <div>11111</div>
