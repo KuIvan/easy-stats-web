@@ -1,18 +1,16 @@
 import { useRouter } from 'next/router';
-import type { GetServerSidePropsContext } from 'next';
-import DefaultLayout from 'src/components/templates/DefaultLayout'
+// import type { GetServerSidePropsContext } from 'next';
+// import DefaultLayout from 'src/components/templates/DefaultLayout'
 import { Children } from 'src/types'
 
-import apolloClient from 'src/lib/apolloClient'
-import { GET_GAME_DATA } from 'src/graphql/queries/game';
+// import apolloClient from 'src/lib/apolloClient'
+// import { GET_GAME_DATA } from 'src/graphql/queries/game';
 import AddStatisticPage from 'src/components/pages/AddStatisticGamePage'
 
 export default function Stats(): JSX.Element {
 
   const router = useRouter();
   const { gameId } = router.query;
-
-  console.log('gameId', gameId)
 
   return (
     <>

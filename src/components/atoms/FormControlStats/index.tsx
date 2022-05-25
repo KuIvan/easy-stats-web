@@ -2,8 +2,8 @@ import React from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { map } from 'lodash'
 
-
 interface FormControlProps {
+  //NOTE:: It is not any, cause you have label, value, setValue and etc. Describe this type.
   form: any
   onChangeFunc: Function
   disabled?: boolean

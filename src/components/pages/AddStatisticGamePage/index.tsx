@@ -1,15 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-
 import { Grid } from '@mui/material'
-import { map } from 'lodash'
-
-//src
-import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
-import TableStats from '../../molecules/TableStats'
-import ButtonForm from 'src/components/atoms/ButtonForm'
 import { useQuery } from '@apollo/client'
+import { map } from 'lodash'
+//src
+import TableStats from 'src/components/molecules/TableStats'
+import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
+import ButtonForm from 'src/components/atoms/ButtonForm'
+import FormControlStats from 'src/components/atoms/FormControlStats'
 import { GET_GAME_DATA } from 'src/graphql/queries/game';
-import FormControlStats from '../../atoms/FormControlStats'
 
 interface AddStatisticPageProps {
   gameId: number
@@ -27,12 +25,14 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       id: gameId,
     },
   })
+
+  // NOTE:: Add deps here
   useEffect(() => {
     setMenuItems(data?.getGame.gamesSquads[0].gamesSquadsPlayer)
   })
 
   function handleChange(_event: ChangeEvent<{}>, setValue: any): void {
-   setValue(_event.target.value)
+   setValue((_event.target as HTMLTextAreaElement).value)
   }
 
   const formStatistic = [
@@ -81,10 +81,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
   // NOTE:: Use lodash here
   function deleteRecord(id: number) {
-    const newArray = [
-      ...rows.slice(0, id),
-      ...rows.slice(id + 1)
-    ]
+    const newArray = [ ...rows.slice(0, id), ...rows.slice(id + 1) ]
     return setRows(newArray)
   }
 
@@ -96,7 +93,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       sx={{ marginTop: 10 }}
     >
       <Grid item xs={12}>
-        <DefaultLandingTitle title={'Add statistic'}/>
+        <DefaultLandingTitle title={`Add statistic for game ${gameId}`}/>
       </Grid>
       <Grid item xs={12}>
         <Grid

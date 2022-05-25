@@ -1,10 +1,8 @@
 import React from 'react'
 import { Button } from '@mui/material'
 
-type Value = string
-
 interface ButtonProps {
-  value: Value
+  value: string
   onClickFunc: Function
   disabled?: boolean
   array?: any
@@ -17,6 +15,7 @@ export default function ButtonForm({
     disabled,
   }: ButtonProps) {
   return (
+    //NOTE:: Why is it array? Is it only for array?
     <Button onClick={() => onClickFunc(array)} disabled={disabled}>{value}</Button>
   )
 }

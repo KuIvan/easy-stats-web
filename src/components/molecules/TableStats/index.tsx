@@ -8,10 +8,10 @@ import {
 } from '@mui/material'
 import { map } from 'lodash'
 //src
-import ButtonForm from '../../atoms/ButtonForm'
-
+import ButtonForm from 'src/components/atoms/ButtonForm'
 
 interface TableStatsProps {
+  //NOTE:: It is not any. Describe this type.
   rowName: any
   rows: any
   buttonFunc: Function
@@ -25,7 +25,7 @@ export default function TableStats({rowName, rows, buttonFunc, buttonValue}: Tab
         <TableRow>
           {map(rowName, function (name: string) {
             return(
-                <TableCell key={name} align="left">{name}</TableCell>
+              <TableCell key={name} align="left">{name}</TableCell>
             )
           })}
         </TableRow>
