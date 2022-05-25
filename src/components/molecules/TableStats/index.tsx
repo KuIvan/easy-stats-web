@@ -11,9 +11,8 @@ import { map } from 'lodash'
 import ButtonForm from 'src/components/atoms/ButtonForm'
 
 interface TableStatsProps {
-  //NOTE:: It is not any. Describe this type.
-  rowName: any
-  rows: any
+  rowName: string[]
+  rows: number[]
   buttonFunc: Function
   buttonValue: string
 }
@@ -39,7 +38,7 @@ export default function TableStats({rowName, rows, buttonFunc, buttonValue}: Tab
               <TableCell align="left">{row.action}</TableCell>
               <TableCell align="left">{row.addressable}</TableCell>
               <TableCell align="left">
-                <ButtonForm onClickFunc={() => buttonFunc(row.id)} value={buttonValue}/>
+                <ButtonForm onClickFunc={() => buttonFunc(row.id)} value={buttonValue} />
               </TableCell>
             </TableRow>
           )}

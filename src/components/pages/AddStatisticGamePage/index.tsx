@@ -15,10 +15,10 @@ interface AddStatisticPageProps {
 
 export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
-  const [playerOne, setPlayerOne] = useState<null | number>(null);
-  const [playerSecond, setPlayerSecond] = useState<null | number>(null);
+  const [playerOne, setPlayerOne] = useState<null | number>(0);
+  const [playerSecond, setPlayerSecond] = useState<null | number>(0);
   const [action, setAction] = useState<null | string>('');
-  const [menuItems, setMenuItems] = useState<any>(null)
+  const [menuItems, setMenuItems] = useState<any>(0)
 
   const { loading, error, data } = useQuery(GET_GAME_DATA, {
     variables: {
@@ -26,10 +26,9 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     },
   })
 
-  // NOTE:: Add deps here
   useEffect(() => {
     setMenuItems(data?.getGame.gamesSquads[0].gamesSquadsPlayer)
-  })
+  }, [loading])
 
   function handleChange(_event: ChangeEvent<{}>, setValue: any): void {
    setValue((_event.target as HTMLTextAreaElement).value)
@@ -67,8 +66,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   function newSelectInput(rows: any) {
     const newArray = [ ...rows, {id: rows.size, initiator: playerOne, addressable: playerSecond, action: action }]
     setAction('')
-    setPlayerOne(null)
-    setPlayerSecond(null)
+    setPlayerOne(0)
+    setPlayerSecond(0)
     return setRows(newArray)
   }
 
@@ -81,7 +80,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
   // NOTE:: Use lodash here
   function deleteRecord(id: number) {
-    const newArray = [ ...rows.slice(0, id), ...rows.slice(id + 1) ]
+    const newArray = [ ...rows.slice(id), ...rows.slice(id + 1) ]
     return setRows(newArray)
   }
 
@@ -113,7 +112,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
               onClickFunc={newSelectInput}
               disabled={(!playerOne || !action) || (playerOne === playerSecond)}
               value='Add Record'
-              array={rows}
+              variable={rows}
             />
           </Grid>
         </Grid>

@@ -2,9 +2,16 @@ import React from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { map } from 'lodash'
 
+interface formField {
+  id: number,
+  label: string,
+  menuItems: string[],
+  value: number,
+  setValue: Function
+}
+
 interface FormControlProps {
-  //NOTE:: It is not any, cause you have label, value, setValue and etc. Describe this type.
-  form: any
+  form: formField
   onChangeFunc: Function
   disabled?: boolean
 }
@@ -23,7 +30,7 @@ export default function FormControlStats({
       >
         {map(form.menuItems, function(item: any) {
           return(
-            <MenuItem key={item} value={form.id != 1 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}>{form.id != 1 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}</MenuItem>
+            <MenuItem key={item.id} value={form.id != 1 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}>{form.id != 1 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}</MenuItem>
           )}
         )}
       </Select>
