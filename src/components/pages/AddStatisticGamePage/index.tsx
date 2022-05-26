@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { Grid } from '@mui/material'
+import { Grid, Skeleton } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { map } from 'lodash'
 //src
@@ -24,7 +24,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     variables: {
       id: gameId,
     },
-  })
+})
 
   useEffect(() => {
     setMenuItems(data?.getGame.gamesSquads[0].gamesSquadsPlayer)
@@ -103,9 +103,10 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
           {map(formStatistic, function(form) {
             return(
               <Grid item xs={2} key={form.id}>
-                <FormControlStats form={form} onChangeFunc={handleChange} />
+                {loading ? <Skeleton animation="wave" height='100%' variant="rectangular"/> : <FormControlStats form={form} onChangeFunc={handleChange} />}
               </Grid>
             )
+
           })}
           <Grid item xs={1}>
             <ButtonForm
