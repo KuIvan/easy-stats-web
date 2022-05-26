@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { Children } from 'src/types'
-import StatisticGamePage from '../../src/components/pages/StatisticGamePage'
+import StatisticGamePage from 'src/components/pages/StatisticGamePage'
 
 export default function Stats(): JSX.Element {
 
