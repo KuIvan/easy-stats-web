@@ -30,7 +30,12 @@ export default function FormControlStats({
       >
         {map(form.menuItems, function(item: any) {
           return(
-            <MenuItem key={item.id} value={form.id != 1 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}>{form.id != 1 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}</MenuItem>
+            <MenuItem
+              key={item.id}
+              value={form.id != 0 ? item.seasonsSquadsPlayer.teamsPlayer.user : item.value}
+            >
+              {form.id != 0 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}
+            </MenuItem>
           )}
         )}
       </Select>

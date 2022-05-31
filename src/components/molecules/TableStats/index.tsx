@@ -12,12 +12,11 @@ import ButtonForm from 'src/components/atoms/ButtonForm'
 
 interface TableStatsProps {
   rowName: string[]
-  rows: number[]
-  buttonFunc: Function
-  buttonValue: string
+  rows: any[]
 }
 
-export default function TableStats({rowName, rows, buttonFunc, buttonValue}: TableStatsProps) {
+export default function TableStats({rowName, rows}: TableStatsProps) {
+
   return (
     <Table>
       <TableHead>
@@ -31,15 +30,13 @@ export default function TableStats({rowName, rows, buttonFunc, buttonValue}: Tab
       </TableHead>
       <TableBody>
         {map(rows, function (row: any, index: number) {
+          console.log('us', row)
           return (
             <TableRow key={row.id}>
               <TableCell align="left">{index + 1}</TableCell>
-              <TableCell align="left">{row.initiator}</TableCell>
-              <TableCell align="left">{row.action}</TableCell>
-              <TableCell align="left">{row.addressable}</TableCell>
-              <TableCell align="left">
-                <ButtonForm onClickFunc={() => buttonFunc(row.id)} value={buttonValue} />
-              </TableCell>
+              <TableCell align="left">{row.initiator.seasonsSquadsPlayer.teamsPlayer.number} {row.initiator.seasonsSquadsPlayer.teamsPlayer.user.fullName}</TableCell>
+              <TableCell align="left">{row.scope}</TableCell>
+              <TableCell align="left">{row.addressable && row.addressable.seasonsSquadsPlayer.teamsPlayer.number} {row.addressable && row.addressable.seasonsSquadsPlayer.teamsPlayer.user.fullName}</TableCell>
             </TableRow>
           )}
         )}
