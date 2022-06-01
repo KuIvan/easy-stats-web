@@ -50,6 +50,17 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     },
   })
 
+  const [handleElement] = useMutation(ADD_ACTION, {
+    onCompleted: (_data) => {
+      console.log("Complete")
+      // toast.success('Ссылка на соцсеть успешно добавлена!');
+    },
+    onError: (error) => {
+      console.log('error', error)
+      // toast.error(`Ошибка при добавлении в закладки: ${error.message}`);
+    },
+  })
+
   function deleteRecord(event: MouseEvent, id: number) {
     refetch()
     return deleteElement({
@@ -59,17 +70,18 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     })
   }
 
-  const [handleAction] = useMutation(ADD_ACTION, {
-    variables: { initiatorId: playerFirst.id, addressableId: playerSecond.id, scope: action, gameId: gameId },
-    onCompleted: (_data) => {
-      refetch()
-      // toast.success('Ссылка на соцсеть успешно добавлена!');
-    },
-    onError: (error) => {
-      console.log('error', error)
-      // toast.error(`Ошибка при добавлении в закладки: ${error.message}`);
-    },
-  })
+  function handleAction() {
+    refetch()
+    return handleElement(
+    {
+      variables: {
+        initiatorId: playerFirst.id,
+        addressableId: playerSecond.id,
+        scope: action,
+        gameId: gameId
+      }
+    })
+  }
 
   useEffect(() => {
     if (teamChoose === 'team-1') {
@@ -92,6 +104,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   }, [data, action, teamChoose, actionsPresent])
 
   function handleChange(_event: ChangeEvent<{}>, setValue: any): void {
+    refetch()
     setValue((_event.target as HTMLTextAreaElement).value)
   }
 
@@ -134,12 +147,13 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       setValue: setPlayerSecond
     },
   ]
+
   function newSelectInput() {
-    refetch()
     handleAction()
     setAction('')
     setPlayerFirst({})
     setPlayerSecond({})
+    setTimeout(refetch, 500)
   }
 
   const chooseTeam = (event: SelectChangeEvent) => {
@@ -157,6 +171,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       <Grid item xs={12}>
         <DefaultLandingTitle title={`Add statistic for game ${gameId}`}/>
       </Grid>
+
       <Grid item xs={2}>
         <FormControl fullWidth>
           <InputLabel>Choose your Team</InputLabel>
@@ -169,6 +184,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
           </Select>
         </FormControl>
       </Grid>
+
       <Grid item xs={12}>
         <Grid
           container
@@ -193,12 +209,14 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
           </Grid>
         </Grid>
       </Grid>
+
       <Grid item xs={4}>
         <TableStats
           rows={actionsPresent}
           rowName={['№','playerFirst', 'action', 'PlayerSecond']}
         />
       </Grid>
+
       <Grid item xs={1}>
         <Grid container marginTop='2.5vh' spacing={2.5}>
           {map(actionsPresent, function (currentAction: object) {
@@ -216,6 +234,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
             )
           })}
         </Grid>
+
       </Grid>
     </Grid>
   )

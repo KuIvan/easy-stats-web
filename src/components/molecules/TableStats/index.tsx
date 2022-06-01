@@ -7,8 +7,6 @@ import {
   TableRow,
 } from '@mui/material'
 import { map } from 'lodash'
-//src
-import ButtonForm from 'src/components/atoms/ButtonForm'
 
 interface TableStatsProps {
   rowName: string[]
@@ -30,7 +28,6 @@ export default function TableStats({rowName, rows}: TableStatsProps) {
       </TableHead>
       <TableBody>
         {map(rows, function (row: any, index: number) {
-          console.log('us', row)
           return (
             <TableRow key={row.id}>
               <TableCell align="left">{index + 1}</TableCell>

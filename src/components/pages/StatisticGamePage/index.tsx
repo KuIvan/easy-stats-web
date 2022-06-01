@@ -11,8 +11,6 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
 
   const [gameStats, setGameStats] = useState<any>([])
 
-
-
   return(
     <Grid
       container

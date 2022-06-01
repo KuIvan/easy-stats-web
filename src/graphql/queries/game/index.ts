@@ -8,23 +8,23 @@ export const GET_GAME_DATA = gql`
       actions {
         id
         initiator {
-          id
           seasonsSquadsPlayer {
             teamsPlayer {
               number
               user {
                 fullName
+                id
               }
             }
           }
         }
         addressable {
-          id
           seasonsSquadsPlayer {
             teamsPlayer {
               number
               user {
                 fullName
+                id
               }
             }
           }
