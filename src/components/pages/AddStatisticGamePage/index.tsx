@@ -3,7 +3,7 @@ import {
   Button,
   FormControl,
   Grid,
-  InputLabel,
+  InputLabel, Link,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -17,18 +17,22 @@ import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import ButtonForm from 'src/components/atoms/ButtonForm'
 import FormControlStats from 'src/components/atoms/FormControlStats'
 import { GET_GAME_DATA } from 'src/graphql/queries/game';
-import { ADD_ACTION } from '../../../graphql/mutation/action/AddAction'
-import { REMOVE_ACTION } from '../../../graphql/mutation/action/RemoveAction'
+import { ADD_ACTION } from 'src/graphql/mutation/action/AddAction'
+import { REMOVE_ACTION } from 'src/graphql/mutation/action/RemoveAction'
 
 interface AddStatisticPageProps {
   gameId: number
 }
 
+type PlayerType = {
+  id: number
+}
+
 export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
-  const [playerFirst, setPlayerFirst] = useState<object>({});
-  const [playerSecond, setPlayerSecond] = useState<object>({});
-  const [action, setAction] = useState<null | string>('');
+  const [playerFirst, setPlayerFirst] = useState<PlayerType>()
+  const [playerSecond, setPlayerSecond] = useState<PlayerType>()
+  const [action, setAction] = useState<null | string>('')
   const [menuItemsPlayerFirst, setMenuItemsPlayerFirst] = useState<any>(0)
   const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<any>(0)
   const [actionsPresent, setActionsPresent] = useState<any>( [])
@@ -75,8 +79,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     return handleElement(
     {
       variables: {
-        initiatorId: playerFirst.id,
-        addressableId: playerSecond.id,
+        initiatorId: playerFirst?.id,
+        addressableId: playerSecond?.id,
         scope: action,
         gameId: gameId
       }
@@ -151,8 +155,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   function newSelectInput() {
     handleAction()
     setAction('')
-    setPlayerFirst({})
-    setPlayerSecond({})
+    setPlayerFirst(null)
+    setPlayerSecond(null)
     setTimeout(refetch, 500)
   }
 
@@ -188,7 +192,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       <Grid item xs={12}>
         <Grid
           container
-          spacing={5}
+          spacing={2}
           justifyContent='center'
         >
           {map(formStatistic, function(form) {
@@ -199,13 +203,15 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
             )
 
           })}
-          <Grid item xs={1}>
-            <ButtonForm
-              onClickFunc={newSelectInput}
-              disabled={(!playerFirst || !action) || (playerFirst === playerSecond)}
-              value='Add Record'
-              variable={actionsPresent}
-            />
+          <Grid item xs={12}>
+            <Grid container justifyContent='center'>
+              <ButtonForm
+                onClickFunc={newSelectInput}
+                disabled={(!playerFirst || !action) || (playerFirst === playerSecond)}
+                value='Add Record'
+                variable={actionsPresent}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
@@ -234,7 +240,13 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
             )
           })}
         </Grid>
-
+      </Grid>
+      <Grid item xs={12}>
+        <Link href='/home'>
+          <Grid container justifyContent='center'>
+            <Button variant='outlined'>Home</Button>
+          </Grid>
+        </Link>
       </Grid>
     </Grid>
   )

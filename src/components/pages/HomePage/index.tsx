@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Box, Grid } from '@mui/material'
 // src
 import MyLastGames from 'src/components/organisms/MyLastGames'

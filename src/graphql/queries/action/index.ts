@@ -1,34 +1,32 @@
 import { gql } from '@apollo/client';
 
-export const GAME_ACTIONS = gql`
-  mutation gameActions($id: ID!) {
-    addAction(id: $id) {
-      action {
-          id
-          game {
-            id
-            status  
-            gamesSquads {
-              id
-              status
-              goals
-              gamesSquadsPlayer {
-                id
-                seasonsSquadsPlayer {
-                  id 
-                  teamsPlayer {
-                  id
-                  user {
-                   fullName
-                   id
-                   }
-                 number
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+export const FETCH_CURRENT_USER_ACTIONS_DATA = gql`
+  query fetchCurrentUserActionsData($gameId: ID!) {
+    fetchCurrentUserActions(gameId: $gameId) {
+       id
+       initiator {
+         seasonsSquadsPlayer {
+           teamsPlayer {
+             number
+             user {
+               fullName  
+               id
+             }
+           }
+         }
+       }
+       addressable {
+         seasonsSquadsPlayer {
+           teamsPlayer {
+             number
+             user {
+               fullName
+               id
+             }
+           }
+         }
+       }
+       scope
+     }
   }
 `

@@ -5,8 +5,8 @@ import { useQuery } from '@apollo/client'
 import styled from '@emotion/styled'
 import moment from 'moment'
 //src
-import { GET_PLAYER_GAMES } from 'src/graphql/queries/games'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
+import { FETCH_ALL_GAMES_DATA } from 'src/graphql/queries/game/fetchAllGames'
 
 const StyledContainer = styled(Grid)`
   border-radius: 10px;
@@ -31,7 +31,7 @@ export default function MyGamesPage(): JSX.Element {
 
   const [games, setGames] = useState<GameType[]>([])
 
-  const { loading, error, data } = useQuery(GET_PLAYER_GAMES, {
+  const { loading, error, data } = useQuery(FETCH_ALL_GAMES_DATA, {
     variables: {
       pagination: {
         per: 10,
@@ -41,7 +41,7 @@ export default function MyGamesPage(): JSX.Element {
   })
 
   useEffect(() => {
-    setGames(data?.fetchGames.nodes)
+    setGames(data?.fetchAllGames)
   }, [loading])
 
   return (
@@ -52,7 +52,7 @@ export default function MyGamesPage(): JSX.Element {
       sx={{ marginTop: 10 }}
     >
       <Grid item xs={12}>
-        <DefaultLandingTitle title={`Your Games`}/>
+        <DefaultLandingTitle title={`All Games`}/>
       </Grid>
       <Grid item xs={12}>
         <Link href='/home'>
@@ -65,7 +65,7 @@ export default function MyGamesPage(): JSX.Element {
         <Grid container justifyContent='center'>
           {map(games, function (game) {
             return (
-              <Link href={`/game-personal-stats/${game.id}`}>
+              <Link href={`/add-game-stats/${game.id}`}>
                 <StyledContainer container key={game.id}>
                   <Grid item xs={12}>
                     <Grid container justifyContent='center'>
@@ -93,4 +93,3 @@ export default function MyGamesPage(): JSX.Element {
     </Grid>
   )
 }
-
