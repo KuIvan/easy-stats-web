@@ -5,6 +5,32 @@ export const GET_GAME_DATA = gql`
     getGame(id: $id) {
       id
       status
+      actions {
+        id
+        initiator {
+          seasonsSquadsPlayer {
+            teamsPlayer {
+              number
+              user {
+                fullName
+                id
+              }
+            }
+          }
+        }
+        addressable {
+          seasonsSquadsPlayer {
+            teamsPlayer {
+              number
+              user {
+                fullName
+                id
+              }
+            }
+          }
+        }
+        scope
+      }
       gamesSquads {
         id
         status
@@ -17,6 +43,7 @@ export const GET_GAME_DATA = gql`
              id
              user {
                fullName
+               id
              }
              number
            }

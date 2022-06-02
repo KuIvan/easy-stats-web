@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { Children } from 'src/types'
-import StatisticGamePage from 'src/components/pages/StatisticGamePage'
+import MyGameStatistic from '../../src/components/pages/MyGameStatistic'
 
 export default function Stats(): JSX.Element {
 
@@ -9,7 +9,7 @@ export default function Stats(): JSX.Element {
 
   return (
     <>
-      <StatisticGamePage gameId={Number(gameId)}/>
+      <MyGameStatistic gameId={Number(gameId)}/>
     </>
   )
 }

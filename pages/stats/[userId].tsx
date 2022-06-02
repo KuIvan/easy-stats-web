@@ -31,7 +31,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const userId = context?.query?.userId;
 
-  console.log('userId', userId)
 
   const { data } = await apolloClient.query({
     query: GET_USER_STATISTICS_DATA,
