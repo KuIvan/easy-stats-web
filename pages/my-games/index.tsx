@@ -1,7 +1,7 @@
 import Head from 'next/head'
 // src
 import { Children } from 'src/types'
-import MyGamesPage from '../../src/components/pages/MyGamesPage'
+import MyGamesPage from 'src/components/pages/MyGamesPage'
 
 export default function MyGames(): JSX.Element {
 

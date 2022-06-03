@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import type { GetServerSidePropsContext } from 'next';
+//src
 import DefaultLayout from 'src/components/templates/DefaultLayout'
-import StatsPage from 'src/components/pages/StatsPage'
-import { Children } from 'src/types'
-
 import apolloClient from 'src/lib/apolloClient'
 import { GET_USER_STATISTICS_DATA } from 'src/graphql/queries/user';
+import { Children } from 'src/types'
+import StatsPage from 'src/components/pages/StatsPage'
 
 export default function Stats(): JSX.Element {
 

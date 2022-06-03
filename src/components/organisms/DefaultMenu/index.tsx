@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Container, Typography } from '@mui/material'
+import { Grid, Container } from '@mui/material'
 import map from 'lodash/map'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
+import { useQuery } from '@apollo/client'
+import get from 'lodash/get'
 // src
 import DefaultMenuTitle from 'src/components/atoms/DefaultMenuTitle'
 import { menuItems } from 'src/components/constants'
-import { axiosClient } from '../../../utils/apiUtils/api.config'
-import { useSnackbar } from 'notistack'
-import get from 'lodash/get'
-import { validateAuthErrors } from '../../../utils/parseUtils/error'
-import { GET_CURRENT_USER_DATA } from '../../../graphql/queries/user/currentUser'
-import { useQuery } from '@apollo/client'
+import { axiosClient } from 'src/utils/apiUtils/api.config'
+import { validateAuthErrors } from 'src/utils/parseUtils/error'
+import { GET_CURRENT_USER_DATA } from 'src/graphql/queries/user/currentUser'
+
+type UserType = {
+  id: number,
+  email: string,
+  name: string
+}
 
 export default function DefaultMenu(): JSX.Element {
 
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
-  const [user, setUser] = useState<any>()
+  const [user, setUser] = useState<UserType | null>(null)
 
   const { loading, error, data } = useQuery(GET_CURRENT_USER_DATA)
 
