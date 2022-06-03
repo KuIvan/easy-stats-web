@@ -12,6 +12,7 @@ interface TeamTitleProps{
 }
 
 export default function TeamTitle({ team, direction = 'row' }: TeamTitleProps): JSX.Element {
+
   const router = useRouter()
 
   return (

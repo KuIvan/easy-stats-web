@@ -1,7 +1,13 @@
-import React, { useState } from 'react'
-import { Grid } from '@mui/material'
-import DefaultLandingTitle from '../../atoms/DefaultLandingTitle'
-import TableStats from '../../molecules/TableStats'
+import React, { useEffect, useState } from 'react'
+import { Grid, Typography } from '@mui/material'
+import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
+import TableStats from 'src/components/molecules/TableStats'
+import { useQuery } from '@apollo/client'
+import { GET_GAME_DATA } from '../../../graphql/queries/game'
+
+type GameType = {
+  id: number
+}
 
 interface StatisticGamePageProps {
   gameId: number
@@ -9,7 +15,17 @@ interface StatisticGamePageProps {
 
 export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
 
-  const [gameStats, setGameStats] = useState<any>([])
+  const [gameStats, setGameStats] = useState<GameType>()
+
+  const { loading, error, data } = useQuery(GET_GAME_DATA, {
+    variables: {
+      id: gameId,
+    },
+  })
+
+  useEffect(() => {
+    setGameStats(data?.getGame)
+  },[loading])
 
   return(
     <Grid
@@ -22,10 +38,7 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
         <DefaultLandingTitle title={`Statistic for game ${gameId}`}/>
       </Grid>
       <Grid item xs={8}>
-        <TableStats
-          rowName={['№','playerFirst', 'action', 'PlayerSecond', 'Nothing']}
-          rows={gameStats}
-        />
+        <Typography variant='h3'>React vs Lazo</Typography>
       </Grid>
     </Grid>
   )

@@ -10,13 +10,21 @@ import TableStats from 'src/components/molecules/TableStats'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import { FETCH_CURRENT_USER_ACTIONS_DATA } from 'src/graphql/queries/action'
 
+type ActionType = {
+  id: number
+  initiator: object
+  addressable: object
+  scope: string
+  isSuccessful: boolean
+}
+
 interface AddStatisticPageProps {
   gameId: number
 }
 
 export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
-  const [actionsPresent, setActionsPresent] = useState<any>([])
+  const [actionsPresent, setActionsPresent] = useState<ActionType>(null)
 
   const { loading, error, data } = useQuery(FETCH_CURRENT_USER_ACTIONS_DATA, {
     variables: {

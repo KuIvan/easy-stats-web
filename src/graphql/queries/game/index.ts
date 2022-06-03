@@ -7,6 +7,7 @@ export const GET_GAME_DATA = gql`
       status
       actions {
         id
+        isSuccessful
         initiator {
           seasonsSquadsPlayer {
             teamsPlayer {

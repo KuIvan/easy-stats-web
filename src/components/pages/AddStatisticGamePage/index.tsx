@@ -10,7 +10,7 @@ import {
   Skeleton,
 } from '@mui/material'
 import { useQuery, useMutation } from '@apollo/client'
-import { map } from 'lodash'
+import { get, map } from 'lodash'
 //src
 import TableStats from 'src/components/molecules/TableStats'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
@@ -19,24 +19,44 @@ import FormControlStats from 'src/components/atoms/FormControlStats'
 import { GET_GAME_DATA } from 'src/graphql/queries/game';
 import { ADD_ACTION } from 'src/graphql/mutation/action/AddAction'
 import { REMOVE_ACTION } from 'src/graphql/mutation/action/RemoveAction'
+import { useSnackbar } from 'notistack'
+import { validateAuthErrors } from 'src/utils/parseUtils/error'
+
+type PlayerType = {
+  id: number
+  fullName: string
+}
+
+type ActionPresent = {
+  id: number
+  initiator: object
+  addressable: object
+  scope: string
+}
+
+type FormType = {
+  id: number
+  menuItems: string[]
+  setValue: Function
+  value: any
+  label: string
+}
 
 interface AddStatisticPageProps {
   gameId: number
 }
 
-type PlayerType = {
-  id: number
-}
-
 export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
-  const [playerFirst, setPlayerFirst] = useState<PlayerType>()
-  const [playerSecond, setPlayerSecond] = useState<PlayerType>()
-  const [action, setAction] = useState<null | string>('')
+  const [playerFirst, setPlayerFirst] = useState<PlayerType | null>(null)
+  const [playerSecond, setPlayerSecond] = useState<PlayerType | null>(null)
+  const [action, setAction] = useState<string>('')
   const [menuItemsPlayerFirst, setMenuItemsPlayerFirst] = useState<any>(0)
   const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<any>(0)
-  const [actionsPresent, setActionsPresent] = useState<any>( [])
+  const [actionsPresent, setActionsPresent] = useState<ActionPresent[]>( [])
   const [teamChoose, setTeamChoose] = useState<string>('')
+  const [successfulValue, setSuccessfulValue] = useState<boolean | null>(null)
+  const { enqueueSnackbar } = useSnackbar()
 
   const { loading, error, data, refetch } = useQuery(GET_GAME_DATA, {
     variables: {
@@ -46,23 +66,25 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
   const [deleteElement] = useMutation(REMOVE_ACTION, {
     onCompleted: (_data) => {
-      console.log("data",_data)
+      enqueueSnackbar('Success', { variant: 'success' })
     },
     onError: (error) => {
-      console.log('error', error)
-      // toast.error(`Ошибка при добавлении в закладки: ${error.message}`);
-    },
+      const errorObject = get(error, 'response.data.errors', false)
+      if (errorObject) {
+        enqueueSnackbar(validateAuthErrors(errorObject), { variant: 'error' })
+    }}
   })
 
   const [handleElement] = useMutation(ADD_ACTION, {
     onCompleted: (_data) => {
-      console.log("Complete")
-      // toast.success('Ссылка на соцсеть успешно добавлена!');
+      enqueueSnackbar('Success', { variant: 'success' })
     },
     onError: (error) => {
-      console.log('error', error)
-      // toast.error(`Ошибка при добавлении в закладки: ${error.message}`);
-    },
+      const errorObject = get(error, 'response.data.errors', false)
+      if (errorObject) {
+        enqueueSnackbar(validateAuthErrors(errorObject), { variant: 'error' })
+      }
+    }
   })
 
   function deleteRecord(event: MouseEvent, id: number) {
@@ -75,13 +97,13 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   }
 
   function handleAction() {
-    refetch()
     return handleElement(
     {
       variables: {
         initiatorId: playerFirst?.id,
         addressableId: playerSecond?.id,
         scope: action,
+        isSuccessful: successfulValue,
         gameId: gameId
       }
     })
@@ -103,13 +125,12 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
         setMenuItemsPlayerSecond(data?.getGame.gamesSquads[1].gamesSquadsPlayer)
       }
     }
-    refetch()
     setActionsPresent(data?.getGame.actions)
   }, [data, action, teamChoose, actionsPresent])
 
   function handleChange(_event: ChangeEvent<{}>, setValue: any): void {
-    refetch()
     setValue((_event.target as HTMLTextAreaElement).value)
+    refetch()
   }
 
   const formStatistic = [
@@ -117,21 +138,21 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       id: 0,
       label: 'Action',
       menuItems: [
-        { id: 0, value: 'goal'},
-        { id: 1, value: 'assist' },
-        { id: 2, value: 'foul' },
-        { id: 4, value: 'shot' },
-        { id: 5, value: 'pass' },
-        { id: 6, value: 'key_pass' },
-        { id: 7, value: 'dribbling' },
-        { id: 8, value: 'losing_the_ball'},
-        { id: 9, value: 'steal'},
-        { id: 10, value: 'interception'},
-        { id: 11, value: 'block'},
-        { id: 12, value: 'position_error'},
-        { id: 13, value: 'created_moment'},
-        { id: 14, value: 'yellow_card' },
-        { id: 15, value: 'red_card' }
+        { id: 0, value: 'goal', label: 'Goal'},
+        { id: 1, value: 'assist', label: 'Assist' },
+        { id: 2, value: 'foul', label: 'Foul'},
+        { id: 4, value: 'shot', label: 'Shot' },
+        { id: 5, value: 'pass', label: 'Pass'},
+        { id: 6, value: 'key_pass', label: 'Key pass' },
+        { id: 7, value: 'dribbling', label: 'Dribbling' },
+        { id: 8, value: 'losing_the_ball', label: 'Losing The Ball' },
+        { id: 9, value: 'steal', label: 'Steal' },
+        { id: 10, value: 'interception', label: 'Interception' },
+        { id: 11, value: 'block', label: 'Block'},
+        { id: 12, value: 'position_error', label: 'Position Error'},
+        { id: 13, value: 'created_moment', label: 'Created Moment'},
+        { id: 14, value: 'yellow_card', label: 'Yellow Card' },
+        { id: 15, value: 'red_card', label: 'Red Card' }
       ],
       value: action,
       setValue: setAction
@@ -140,15 +161,22 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       id: 1,
       label: 'Player #1',
       menuItems: menuItemsPlayerFirst,
-      value: playerFirst,
+      value: playerFirst?.id,
       setValue: setPlayerFirst
     },
     {
       id: 2,
       label: 'Player #2',
       menuItems: menuItemsPlayerSecond,
-      value: playerSecond,
+      value: playerSecond?.id,
       setValue: setPlayerSecond
+    },
+    {
+      id: 3,
+      label: 'Successful',
+      menuItems: [ { id: 0, value: true, label: 'True' }, { id: 1, value: false, label: 'False' } ],
+      value: successfulValue,
+      setValue: setSuccessfulValue
     },
   ]
 
@@ -157,12 +185,12 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     setAction('')
     setPlayerFirst(null)
     setPlayerSecond(null)
+    setSuccessfulValue(null)
     setTimeout(refetch, 500)
   }
 
   const chooseTeam = (event: SelectChangeEvent) => {
     setTeamChoose(event.target.value as string);
-    refetch()
   };
 
   return (
@@ -195,7 +223,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
           spacing={2}
           justifyContent='center'
         >
-          {map(formStatistic, function(form) {
+          {map(formStatistic, function(form: FormType) {
             return(
               <Grid item xs={2} key={form.id}>
                 {loading ? <Skeleton animation="wave" height='100%' variant="rectangular"/> : <FormControlStats form={form} onChangeFunc={handleChange} />}
@@ -219,15 +247,15 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       <Grid item xs={4}>
         <TableStats
           rows={actionsPresent}
-          rowName={['№','playerFirst', 'action', 'PlayerSecond']}
+          rowName={['№','Initiator', 'action', 'Addressable', 'Successful']}
         />
       </Grid>
 
       <Grid item xs={1}>
-        <Grid container marginTop='2.5vh' spacing={2.5}>
-          {map(actionsPresent, function (currentAction: object) {
+        <Grid container marginTop='4vh'>
+          {map(actionsPresent, function (currentAction: ActionPresent) {
             return (
-              <Grid item xs={10} key={currentAction.id}>
+              <Grid item xs={10} key={currentAction.id} marginTop='9%'>
                 <Button
                   variant='outlined'
                   onClick={(event) => deleteRecord(event, currentAction.id)}
