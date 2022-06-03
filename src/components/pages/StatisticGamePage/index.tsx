@@ -38,7 +38,7 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
         <DefaultLandingTitle title={`Statistic for game ${gameId}`}/>
       </Grid>
       <Grid item xs={8}>
-        <Typography variant='h3'>React vs Lazo</Typography>
+        <Typography variant='h3'>TestName1 vs TestName2</Typography>
       </Grid>
     </Grid>
   )
