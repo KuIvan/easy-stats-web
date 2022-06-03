@@ -38,7 +38,7 @@ export default function DefaultMenu(): JSX.Element {
       })
   }
 
-  const addStatsPage = user && user.email === 'nikita-shuba@gmail.com' ? <DefaultMenuTitle  title='Add Statistic game' isHighlighted={'/all-games' === router.pathname} link='/all-games' /> : null
+  const addStatsPage = user && user.email === 'admin-admin@gmail.com' ? <DefaultMenuTitle  title='Add Statistic game' isHighlighted={'/all-games' === router.pathname} link='/all-games' /> : null
 
   return (
     <Container maxWidth="xl">

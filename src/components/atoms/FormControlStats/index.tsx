@@ -32,9 +32,9 @@ export default function FormControlStats({
           return(
             <MenuItem
               key={item.id}
-              value={form.id != 0 ? item.seasonsSquadsPlayer.teamsPlayer.user : item.value}
+              value={( form.id != 0 && form.id != 3) ? item.seasonsSquadsPlayer.teamsPlayer : item.value}
             >
-              {form.id != 0 ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.value}
+              {( form.id != 0 && form.id != 3) ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.label}
             </MenuItem>
           )}
         )}

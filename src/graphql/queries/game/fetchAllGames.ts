@@ -12,9 +12,9 @@ export const FETCH_ALL_GAMES_DATA = gql`
           team {
             id
             name
-           }
           }
         }
       }
     }
+  }
 `
