@@ -8,9 +8,17 @@ import {
 } from '@mui/material'
 import { map } from 'lodash'
 
+type ActionType = {
+  id: number
+  initiator: object
+  addressable: object
+  scope: string
+  isSuccessful: boolean
+}
+
 interface TableStatsProps {
   rowName: string[]
-  rows: object[]
+  rows: ActionType
 }
 
 export default function TableStats({rowName, rows}: TableStatsProps) {

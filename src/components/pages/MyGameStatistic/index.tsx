@@ -11,7 +11,11 @@ import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import { FETCH_CURRENT_USER_ACTIONS_DATA } from 'src/graphql/queries/action'
 
 type ActionType = {
-  object: []
+  id: number
+  initiator: object
+  addressable: object
+  scope: string
+  isSuccessful: boolean
 }
 
 interface AddStatisticPageProps {
@@ -20,7 +24,7 @@ interface AddStatisticPageProps {
 
 export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
-  const [actionsPresent, setActionsPresent] = useState<ActionType | null>(null)
+  const [actionsPresent, setActionsPresent] = useState<ActionType>(null)
 
   const { loading, error, data } = useQuery(FETCH_CURRENT_USER_ACTIONS_DATA, {
     variables: {

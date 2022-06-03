@@ -22,20 +22,40 @@ import { REMOVE_ACTION } from 'src/graphql/mutation/action/RemoveAction'
 import { useSnackbar } from 'notistack'
 import { validateAuthErrors } from 'src/utils/parseUtils/error'
 
+type PlayerType = {
+  id: number
+  fullName: string
+}
+
+type ActionPresent = {
+  id: number
+  initiator: object
+  addressable: object
+  scope: string
+}
+
+type FormType = {
+  id: number
+  menuItems: string[]
+  setValue: Function
+  value: any
+  label: string
+}
+
 interface AddStatisticPageProps {
   gameId: number
 }
 
 export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
-  const [playerFirst, setPlayerFirst] = useState<object | null>()
-  const [playerSecond, setPlayerSecond] = useState<object | null>()
+  const [playerFirst, setPlayerFirst] = useState<PlayerType | null>(null)
+  const [playerSecond, setPlayerSecond] = useState<PlayerType | null>(null)
   const [action, setAction] = useState<string>('')
   const [menuItemsPlayerFirst, setMenuItemsPlayerFirst] = useState<any>(0)
   const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<any>(0)
-  const [actionsPresent, setActionsPresent] = useState<any>( [])
+  const [actionsPresent, setActionsPresent] = useState<ActionPresent[]>( [])
   const [teamChoose, setTeamChoose] = useState<string>('')
-  const [successfulValue, setSuccessfulValue] = useState<boolean>()
+  const [successfulValue, setSuccessfulValue] = useState<boolean | null>(null)
   const { enqueueSnackbar } = useSnackbar()
 
   const { loading, error, data, refetch } = useQuery(GET_GAME_DATA, {
@@ -80,8 +100,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     return handleElement(
     {
       variables: {
-        initiatorId: playerFirst.id,
-        addressableId: playerSecond.id,
+        initiatorId: playerFirst?.id,
+        addressableId: playerSecond?.id,
         scope: action,
         isSuccessful: successfulValue,
         gameId: gameId
@@ -203,7 +223,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
           spacing={2}
           justifyContent='center'
         >
-          {map(formStatistic, function(form) {
+          {map(formStatistic, function(form: FormType) {
             return(
               <Grid item xs={2} key={form.id}>
                 {loading ? <Skeleton animation="wave" height='100%' variant="rectangular"/> : <FormControlStats form={form} onChangeFunc={handleChange} />}
@@ -233,7 +253,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
       <Grid item xs={1}>
         <Grid container marginTop='4vh'>
-          {map(actionsPresent, function (currentAction: object) {
+          {map(actionsPresent, function (currentAction: ActionPresent) {
             return (
               <Grid item xs={10} key={currentAction.id} marginTop='9%'>
                 <Button
