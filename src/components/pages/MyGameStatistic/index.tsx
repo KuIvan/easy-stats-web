@@ -24,6 +24,7 @@ interface AddStatisticPageProps {
 
 export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
+  // @ts-ignore
   const [actionsPresent, setActionsPresent] = useState<ActionType>(null)
 
   const { loading, error, data } = useQuery(FETCH_CURRENT_USER_ACTIONS_DATA, {
