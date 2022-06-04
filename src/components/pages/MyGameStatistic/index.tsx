@@ -55,6 +55,7 @@ export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
         <Grid item xs={4}>
           <TableStats
+            // @ts-ignore
             rows={actionsPresent}
             rowName={['№', 'playerFirst', 'action', 'PlayerSecond']}
           />

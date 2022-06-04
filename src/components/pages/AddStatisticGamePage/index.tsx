@@ -253,6 +253,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
         <Grid item xs={4}>
           <TableStats
+            // @ts-ignore
             rows={actionsPresent}
             rowName={['№', 'Initiator', 'action', 'Addressable', 'Successful']}
           />
@@ -265,6 +266,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
                 <Grid item xs={10} key={currentAction.id} marginTop='9%'>
                   <Button
                     variant='outlined'
+                    // @ts-ignore
                     onClick={(event) => deleteRecord(event, currentAction.id)}
                     fullWidth
                     style={{ height: '70%' }}

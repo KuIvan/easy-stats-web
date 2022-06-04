@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import { GET_GAME_DATA } from 'src/graphql/queries/game'
 import useCurrentUser from 'src/components/molecules/useCurrentUser'
-import NoAccess from 'src/components/pagesNoAccesPage'
+// import NoAccess from 'src/components/pagesNoAccesPage'
 
 type GameType = {
   id: number
@@ -30,7 +30,8 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
   },[loading])
 
   if (useCurrentUser() === undefined) {
-    return <NoAccess/>
+    // return <NoAccess/>
+    return <Typography variant='h3'>Not enough rules</Typography>
   } else {
     return(
       <Grid
