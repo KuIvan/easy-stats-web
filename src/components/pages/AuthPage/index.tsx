@@ -4,6 +4,7 @@ import { Breakpoints } from '@mui/system/createTheme/createBreakpoints'
 import SignInFormLayout from 'src/components/organisms/SignInFormLayout'
 
 export default function AuthPage(): JSX.Element {
+
   const isMobile = useMediaQuery(({ breakpoints }: { breakpoints: Breakpoints }) => breakpoints.down('md'));
 
   return (

@@ -9,6 +9,8 @@ import { useQuery } from '@apollo/client'
 import TableStats from 'src/components/molecules/TableStats'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import { FETCH_CURRENT_USER_ACTIONS_DATA } from 'src/graphql/queries/action'
+import useCurrentUser from 'src/components/molecules/useCurrentUser'
+import NoAccess from 'src/components/pages/NoAccesPage'
 
 type ActionType = {
   id: number
@@ -24,8 +26,7 @@ interface AddStatisticPageProps {
 
 export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
-  // @ts-ignore
-  const [actionsPresent, setActionsPresent] = useState<ActionType>(null)
+  const [actionsPresent, setActionsPresent] = useState<ActionType | null>(null)
 
   const { loading, error, data } = useQuery(FETCH_CURRENT_USER_ACTIONS_DATA, {
     variables: {
@@ -35,35 +36,39 @@ export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
   useEffect(() => {
     setActionsPresent(data?.fetchCurrentUserActions)
-  },[loading])
+  }, [loading])
 
-  return (
-    <Grid
-      container
-      spacing={5}
-      justifyContent='center'
-      sx={{ marginTop: 10 }}
-    >
+  if (useCurrentUser() === undefined) {
+    return <NoAccess/>
+  } else {
+    return (
+      <Grid
+        container
+        spacing={5}
+        justifyContent='center'
+        sx={{ marginTop: 10 }}
+      >
 
-      <Grid item xs={12}>
-        <DefaultLandingTitle title={`My statistic for game ${gameId}`}/>
+        <Grid item xs={12}>
+          <DefaultLandingTitle title={`My statistic for game ${gameId}`}/>
+        </Grid>
+
+        <Grid item xs={4}>
+          <TableStats
+            rows={actionsPresent}
+            rowName={['№', 'playerFirst', 'action', 'PlayerSecond']}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Link href='/home'>
+            <Grid container justifyContent='center'>
+              <Button variant='outlined'>Home</Button>
+            </Grid>
+          </Link>
+        </Grid>
+
       </Grid>
-
-      <Grid item xs={4}>
-        <TableStats
-          rows={actionsPresent}
-          rowName={['№', 'playerFirst', 'action', 'PlayerSecond']}
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <Link href='/home'>
-          <Grid container justifyContent='center'>
-            <Button variant='outlined'>Home</Button>
-          </Grid>
-        </Link>
-      </Grid>
-
-    </Grid>
-  )
+    )
+  }
 }

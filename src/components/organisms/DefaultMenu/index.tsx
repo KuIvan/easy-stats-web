@@ -11,6 +11,8 @@ import { menuItems } from 'src/components/constants'
 import { axiosClient } from 'src/utils/apiUtils/api.config'
 import { validateAuthErrors } from 'src/utils/parseUtils/error'
 import { GET_CURRENT_USER_DATA } from 'src/graphql/queries/user/currentUser'
+import useCurrentUser from 'src/components/molecules/useCurrentUser'
+import { removeJWTBearerToken } from 'src/utils/apiUtils/storage.config'
 
 type UserType = {
   id: number,
@@ -31,17 +33,17 @@ export default function DefaultMenu(): JSX.Element {
   },[loading])
 
   function signOut() {
-    localStorage.removeItem('JWT_BEARER_TOKEN')
     axiosClient.delete('/users/sign_out')
       .then( response => {
         enqueueSnackbar('Success', { variant: 'success' })
       })
       .catch(error => {
-        const errorObject = get(error, 'response.data.errors', false)
-        if (errorObject) {
-          enqueueSnackbar(validateAuthErrors(errorObject), { variant: 'error' })
-        }
-      })
+      const errorObject = get(error, 'response.data.errors', false)
+      if (errorObject) {
+        enqueueSnackbar(validateAuthErrors(errorObject), { variant: 'error' })
+      }
+    })
+    removeJWTBearerToken()
   }
 
   const addStatsPage = user && user.email === 'admin-admin@gmail.com' ? <DefaultMenuTitle  title='Add Statistic game' isHighlighted={'/all-games' === router.pathname} link='/all-games' /> : null
@@ -82,7 +84,7 @@ export default function DefaultMenu(): JSX.Element {
           </Grid>
 
           <Grid item xs={12} onClick={signOut}>
-            <DefaultMenuTitle  title='Sign Out' isHighlighted={'/' === router.pathname} link='/' />
+            {useCurrentUser() != undefined ? <DefaultMenuTitle  title='Sign Out' isHighlighted={'/' === router.pathname} link='/' /> : <DefaultMenuTitle  title='Sign In' isHighlighted={'/' === router.pathname} link='/' />}
           </Grid>
 
         </Grid>

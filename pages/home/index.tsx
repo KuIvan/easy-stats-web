@@ -3,18 +3,19 @@ import Head from 'next/head'
 import DefaultLayout from 'src/components/templates/DefaultLayout'
 import HomePage from 'src/components/pages/HomePage'
 import { Children } from 'src/types'
+import React from 'react'
 
 export default function Home(): JSX.Element {
-  return (
-    <>
-      <Head>
-        <title>YourEasyStats | Home</title>
-        <meta name="description" content="Solution for generate football stats"/>
-      </Head>
+    return (
+      <>
+        <Head>
+          <title>YourEasyStats | Home</title>
+          <meta name="description" content="Solution for generate football stats"/>
+        </Head>
 
-      <HomePage/>
-    </>
-  )
+        <HomePage/>
+      </>
+    )
 }
 
 Home.getLayout = function getLayout(page: Children) {
