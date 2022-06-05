@@ -7,8 +7,6 @@ import NoAccess from 'src/components/pages/NoAccesPage'
 
 export default function HomePage(): JSX.Element {
 
-  console.log('CurrentUser email', useCurrentUser())
-
   if (useCurrentUser() === undefined) {
     return <NoAccess/>
   } else {
