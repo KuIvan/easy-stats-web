@@ -15,7 +15,7 @@ type GameType = {
   gamesSquads: any
 }
 
-export default function MyGamesPage(): JSX.Element {
+export default function AllGamesPage(): JSX.Element {
 
   const [games, setGames] = useState<GameType[]>([])
 
