@@ -7,7 +7,7 @@ import { SnackbarProvider } from 'notistack'
 // src
 import '../styles/globals.css'
 import DefaultLayout from 'src/components/templates/DefaultLayout'
-import theme from '../src/styles/theme'
+import theme from 'src/styles/theme'
 import { ApolloProvider } from '@apollo/client'
 import apolloClient from 'src/lib/apolloClient'
 

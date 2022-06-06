@@ -36,6 +36,13 @@ export const GET_GAME_DATA = gql`
         id
         status
         goals
+        seasonsSquad {
+          id
+          team {
+            name
+            teamPhoto
+          }
+        }
         gamesSquadsPlayer {
           id
           seasonsSquadsPlayer {

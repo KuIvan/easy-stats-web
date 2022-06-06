@@ -11,6 +11,7 @@ export const menuItems = [
   { title: "My Teams", link: '/teams', image: team },
   { title: "Tournaments", link: '/tournaments', image: tournaments },
   { title: "About us", link: '/about', image: about },
+  { title: "All Games", link: '/all-games'}
 ]
 
 export const blocksAbout = [
