@@ -53,10 +53,14 @@ export default function MyGamesPage(): JSX.Element {
             </Grid>
           </Link>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={8}>
           <Grid container justifyContent='center'>
             {map(games, function (game) {
-              return <GameList game={game} link='/game-personal-stats'/>
+              return (
+                  <Grid item xs={12}>
+                    <GameList game={game} link='/game-personal-stats'/>
+                  </Grid>
+                )
             })}
           </Grid>
         </Grid>
