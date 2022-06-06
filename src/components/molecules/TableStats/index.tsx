@@ -18,7 +18,7 @@ type ActionType = {
 
 interface TableStatsProps {
   rowName: string[]
-  rows: ActionType
+  rows: ActionType | null
 }
 
 export default function TableStats({rowName, rows}: TableStatsProps) {

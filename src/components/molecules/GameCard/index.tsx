@@ -7,6 +7,7 @@ import moment from 'moment'
 import { GameInterface } from 'src/types/games'
 import SeasonTitle from 'src/components/atoms/SeasonTitle'
 import TeamTitle from 'src/components/atoms/TeamTitle'
+import palette from 'src/styles/theme/palette'
 
 interface GameCardProps {
   game: GameInterface
@@ -21,7 +22,7 @@ export default function GameCard({ game }: GameCardProps): JSX.Element {
     <Grid
       item
       xs={12}
-      sx={({ palette }) => ({
+      sx={{
         borderColor: palette.primary.main,
         borderWidth: 2,
         borderStyle: 'solid',
@@ -29,11 +30,11 @@ export default function GameCard({ game }: GameCardProps): JSX.Element {
         marginTop: 2,
         cursor: 'pointer',
         '&:hover': {
-          // @ts-ignore
           color: palette.system.white.main,
           background: palette.primary.main,
-        },
-      })}
+        }
+      }
+      }
     >
       <Link passHref href={`/games/${game.id}`}>
         <a>

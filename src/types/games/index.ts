@@ -21,7 +21,7 @@ export interface SeasonsSquadInterface {
 export interface TeamInterface {
   id: number
   name: string
-  teamPhoto: string
+  teamPhoto: string | StaticImageData
 }
 
 export interface StageInterface {

@@ -38,7 +38,7 @@ export default function AllGamesPage(): JSX.Element {
     return (
       <Grid
         container
-        spacing={5}
+        spacing={2}
         justifyContent='center'
         sx={{ marginTop: 10 }}
       >
@@ -53,14 +53,18 @@ export default function AllGamesPage(): JSX.Element {
             </Grid>
           </Link>
         </Grid>
-
-        <Grid item xs={5}>
+        <Grid item xs={9}>
           <Grid container justifyContent='center'>
             {map(games, function (game) {
-              return <GameList game={game} link='add-game-stats'/>
+              return(
+                <Grid item xs={7} marginBottom={2}>
+                  <GameList game={game} link='add-game-stats'/>
+                </Grid>
+              )
             })}
           </Grid>
         </Grid>
+
       </Grid>
     )
   }

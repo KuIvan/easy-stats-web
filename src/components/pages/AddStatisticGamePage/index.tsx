@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, MouseEventHandler, useEffect, useState } from 'react'
 import {
   Button,
   FormControl,
@@ -30,11 +30,12 @@ type PlayerType = {
   number: number
 }
 
-type ActionPresent = {
+type ActionType = {
   id: number
   initiator: object
   addressable: object
   scope: string
+  isSuccessful: boolean
 }
 
 type FormType = {
@@ -56,7 +57,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   const [action, setAction] = useState<string>('')
   const [menuItemsPlayerFirst, setMenuItemsPlayerFirst] = useState<any>(0)
   const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<any>(0)
-  const [actionsPresent, setActionsPresent] = useState<ActionPresent[]>([])
+  const [actionsPresent, setActionsPresent] = useState<ActionType | null>(null)
   const [teamChoose, setTeamChoose] = useState<string>('')
   const [successfulValue, setSuccessfulValue] = useState<boolean>(true)
   const { enqueueSnackbar } = useSnackbar()
@@ -70,6 +71,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   const [deleteElement] = useMutation(REMOVE_ACTION, {
     onCompleted: (_data) => {
       enqueueSnackbar('Success', { variant: 'success' })
+      refetch()
     },
     onError: (error) => {
       const errorObject = get(error, 'response.data.errors', false)
@@ -91,8 +93,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     }
   })
 
-  function deleteRecord(event: MouseEvent, id: number) {
-    refetch()
+  function deleteRecord(id: number) {
     return deleteElement({
       variables: {
         id
@@ -254,7 +255,6 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
         <Grid item xs={4}>
           <TableStats
-            // @ts-ignore
             rows={actionsPresent}
             rowName={['№', 'Initiator', 'action', 'Addressable', 'Successful']}
           />
@@ -262,13 +262,12 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
         <Grid item xs={1}>
           <Grid container marginTop='4.6vh'>
-            {map(actionsPresent, function (currentAction: ActionPresent) {
+            {map(actionsPresent, function (currentAction: ActionType) {
               return (
                 <Grid item xs={10} key={currentAction.id} marginTop='8.9%'>
                   <Button
                     variant='outlined'
-                    // @ts-ignore
-                    onClick={(event) => deleteRecord(event, currentAction.id)}
+                    onClick={() => {deleteRecord(currentAction.id)}}
                     fullWidth
                     style={{ height: '80%' }}
                   >
