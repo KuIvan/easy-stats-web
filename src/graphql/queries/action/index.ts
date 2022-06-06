@@ -27,6 +27,7 @@ export const FETCH_CURRENT_USER_ACTIONS_DATA = gql`
          }
        }
        scope
+       isSuccessful
      }
   }
 `

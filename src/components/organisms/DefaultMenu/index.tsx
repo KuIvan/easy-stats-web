@@ -30,7 +30,7 @@ export default function DefaultMenu(): JSX.Element {
 
   useEffect(() => {
     setUser(data?.getCurrentUser)
-  },[loading])
+  },[loading, data?.getCurrentUser])
 
   function signOut() {
     axiosClient.delete('/users/sign_out')

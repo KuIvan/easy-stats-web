@@ -21,7 +21,7 @@ export default function AuthLayout({ children }: { children: Children }): JSX.El
     }
 
     getToken()
-  }, [])
+  }, [router])
 
   return (
     <Grid

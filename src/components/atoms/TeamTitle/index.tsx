@@ -1,7 +1,7 @@
 import React from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Grid, Typography, Box } from '@mui/material'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
+// import Image from 'next/image'
 import image from '/public/icons/default/logo2-1.png'
 // src
 import { TeamInterface } from 'src/types/games'
@@ -39,11 +39,12 @@ export default function TeamTitle({ team, direction = 'row' }: TeamTitleProps): 
         marginLeft={direction === 'row-reverse' ? '12px' : '0'}
         marginRight={direction !== 'row-reverse' ? '12px' : '0'}
       >
-        <Image
+        <img
           alt="Block img"
           src={team.teamPhoto || image}
-          layout="fill"
+          style={{height: 50, width: 50, borderRadius: '50%'}}
         />
+
       </Grid>
       <Grid item>
         <Typography variant="h6">

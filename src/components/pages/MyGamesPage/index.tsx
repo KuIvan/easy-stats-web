@@ -31,7 +31,7 @@ export default function MyGamesPage(): JSX.Element {
 
   useEffect(() => {
     setGames(data?.fetchGames.nodes)
-  }, [loading])
+  }, [loading, data?.fetchGames.nodes])
 
   if (useCurrentUser() === undefined) {
     return <NoAccess/>

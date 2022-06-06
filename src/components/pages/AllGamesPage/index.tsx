@@ -30,7 +30,7 @@ export default function AllGamesPage(): JSX.Element {
 
   useEffect(() => {
     setGames(data?.fetchAllGames)
-  }, [loading])
+  }, [loading, data?.fetchAllGames])
 
   if (useCurrentUser() === undefined) {
     return <NoAccess/>

@@ -36,7 +36,7 @@ export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
   useEffect(() => {
     setActionsPresent(data?.fetchCurrentUserActions)
-  }, [loading])
+  }, [loading, data?.fetchCurrentUserActions])
 
   if (useCurrentUser() === undefined) {
     return <NoAccess/>
@@ -57,7 +57,7 @@ export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
           <TableStats
             // @ts-ignore
             rows={actionsPresent}
-            rowName={['№', 'playerFirst', 'action', 'PlayerSecond']}
+            rowName={['№', 'playerFirst', 'action', 'PlayerSecond', 'Successful']}
           />
         </Grid>
 

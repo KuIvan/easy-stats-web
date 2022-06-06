@@ -9,7 +9,7 @@ export default function useCurrentUser() {
 
  useEffect(() => {
   setUserEmail(data?.getCurrentUser.email)
- }, [loading])
+ }, [loading, data?.getCurrentUser.email])
 
  return userEmail
 }

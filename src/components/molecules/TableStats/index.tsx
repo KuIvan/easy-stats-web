@@ -22,7 +22,6 @@ interface TableStatsProps {
 }
 
 export default function TableStats({rowName, rows}: TableStatsProps) {
-
   return (
     <Table>
       <TableHead>

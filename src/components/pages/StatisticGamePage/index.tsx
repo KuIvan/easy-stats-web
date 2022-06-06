@@ -27,7 +27,7 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
 
   useEffect(() => {
     setGameStats(data?.getGame)
-  },[loading])
+  },[loading, data?.getGame])
 
   if (useCurrentUser() === undefined) {
     // return <NoAccess/>

@@ -27,6 +27,7 @@ import NoAccess from 'src/components/pages/NoAccesPage'
 type PlayerType = {
   id: number
   fullName: string
+  number: number
 }
 
 type ActionPresent = {
@@ -57,7 +58,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<any>(0)
   const [actionsPresent, setActionsPresent] = useState<ActionPresent[]>([])
   const [teamChoose, setTeamChoose] = useState<string>('')
-  const [successfulValue, setSuccessfulValue] = useState<boolean | null>(null)
+  const [successfulValue, setSuccessfulValue] = useState<boolean>(true)
   const { enqueueSnackbar } = useSnackbar()
 
   const { loading, error, data, refetch } = useQuery(GET_GAME_DATA, {
@@ -188,7 +189,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     setAction('')
     setPlayerFirst(null)
     setPlayerSecond(null)
-    setSuccessfulValue(null)
+    setSuccessfulValue(true)
     setTimeout(refetch, 500)
   }
 
@@ -260,16 +261,16 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
         </Grid>
 
         <Grid item xs={1}>
-          <Grid container marginTop='4vh'>
+          <Grid container marginTop='4.6vh'>
             {map(actionsPresent, function (currentAction: ActionPresent) {
               return (
-                <Grid item xs={10} key={currentAction.id} marginTop='9%'>
+                <Grid item xs={10} key={currentAction.id} marginTop='8.9%'>
                   <Button
                     variant='outlined'
                     // @ts-ignore
                     onClick={(event) => deleteRecord(event, currentAction.id)}
                     fullWidth
-                    style={{ height: '70%' }}
+                    style={{ height: '80%' }}
                   >
                     Delete
                   </Button>
