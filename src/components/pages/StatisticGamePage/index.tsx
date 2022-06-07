@@ -17,6 +17,7 @@ type TeamNameType = {
 
 type UserType = {
   fullName: string
+  id: number
 }
 
 type TeamsPlayer = {
@@ -81,23 +82,23 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
           <DefaultLandingTitle title={`Statistic for Game`}/>
         </Grid>
         <Grid item xs={12}>
-          <Grid container justifyContent='center'  alignItems='center' spacing={5}>
+          <Grid container justifyContent='center' alignItems='center' spacing={5}>
             <Grid item>
-                <img
-                  alt='logo-team-1'
-                  src={setTeamPicture(host?.seasonsSquad.team.name)}
-                  style={{ height: 150, width: 150, borderRadius: '20%', objectFit: 'cover' }}
-                />
+              <img
+                alt='logo-team-1'
+                src={setTeamPicture(host?.seasonsSquad.team.name)}
+                style={{ height: 150, width: 150, borderRadius: '20%', objectFit: 'cover' }}
+              />
             </Grid>
             <Grid item>
               <Typography variant='h3'>{host?.seasonsSquad.team.name} : {guest?.seasonsSquad.team.name}</Typography>
             </Grid>
             <Grid item>
-                <img
-                  alt='logo-team-2'
-                  src={setTeamPicture(guest?.seasonsSquad.team.name)}
-                  style={{ height: 150, width: 150, borderRadius: '50%', objectFit: 'cover' }}
-                />
+              <img
+                alt='logo-team-2'
+                src={setTeamPicture(guest?.seasonsSquad.team.name)}
+                style={{ height: 150, width: 150, borderRadius: '50%', objectFit: 'cover' }}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -115,8 +116,11 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
                   return (
                     <Grid item xs={12} key={player.id}>
                       <Grid container justifyContent='end'>
-                        <Typography
-                          variant='h5'>{player.seasonsSquadsPlayer?.teamsPlayer.user.fullName} {player.seasonsSquadsPlayer?.teamsPlayer.number}</Typography>
+                        <Link href={`/user-stats/${player.seasonsSquadsPlayer?.teamsPlayer.user.id}`}>
+                          <Typography
+                            variant='h5'>{player.seasonsSquadsPlayer?.teamsPlayer.user.fullName} {player.seasonsSquadsPlayer?.teamsPlayer.number}
+                          </Typography>
+                        </Link>
                       </Grid>
                     </Grid>
                   )
@@ -128,8 +132,11 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
                 {map(guest?.gamesSquadsPlayer, function (player: PlayerType) {
                   return (
                     <Grid item xs={12} key={player.id}>
-                      <Typography
-                        variant='h5'>{player.seasonsSquadsPlayer?.teamsPlayer.number} {player.seasonsSquadsPlayer?.teamsPlayer.user.fullName}</Typography>
+                      <Link href={`/user-stats/${player.seasonsSquadsPlayer?.teamsPlayer.user.id}`}>
+                        <Typography
+                          variant='h5'>{player.seasonsSquadsPlayer?.teamsPlayer.number} {player.seasonsSquadsPlayer?.teamsPlayer.user.fullName}
+                        </Typography>
+                      </Link>
                     </Grid>
                   )
                 })}

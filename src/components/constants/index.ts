@@ -8,8 +8,8 @@ import image from 'public/icons/default/logo2-1.png'
 export const menuItems = [
   { title: "Home", link: '/home', image: home },
   { title: "My Games", link: '/my-games', image: stats },
-  { title: "My Teams", link: '/teams', image: team },
-  { title: "Tournaments", link: '/tournaments', image: tournaments },
+  { title: "My Teams (In Developing)", link: '/teams', image: team },
+  { title: "Tournaments (In Developing)", link: '/tournaments', image: tournaments },
   { title: "About us", link: '/about', image: about },
   { title: "All Games", link: '/all-games'}
 ]

@@ -6,6 +6,15 @@ export const GET_USER_STATISTICS_DATA = gql`
       id
       fullName
       email
+      teamsPlayers {
+        id
+        number
+        team {
+          id
+          name
+          teamPhoto
+        }
+      }
     }
   }
 `

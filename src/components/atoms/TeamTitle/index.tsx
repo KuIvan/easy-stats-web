@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import image from '/public/icons/default/logo2-1.png'
 // src
 import { TeamInterface } from 'src/types/games'
+import setTeamPicture from 'src/utils/TeamPicture'
 
 interface TeamTitleProps{
   team: TeamInterface
@@ -38,9 +39,8 @@ export default function TeamTitle({ team, direction = 'row' }: TeamTitleProps): 
       >
         <img
           alt="Block img"
-          // @ts-ignore
-          src={team.teamPhoto || image}
-          style={{height: 50, width: 50, borderRadius: '50%'}}
+          src={setTeamPicture(team.name)}
+          style={{height: 70, width: 70, borderRadius: '30%'}}
         />
 
       </Grid>

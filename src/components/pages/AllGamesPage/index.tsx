@@ -32,7 +32,9 @@ export default function AllGamesPage(): JSX.Element {
     setGames(data?.fetchAllGames)
   }, [loading, data?.fetchAllGames])
 
-  if (useCurrentUser() === undefined) {
+  const user = useCurrentUser()
+
+  if (user === undefined) {
     return <NoAccess/>
   } else {
     return (
@@ -58,7 +60,7 @@ export default function AllGamesPage(): JSX.Element {
             {map(games, function (game) {
               return (
                 <Grid item xs={12}>
-                  <GameList game={game} link='/game-personal-stats'/>
+                  <GameList game={game} link={ user === 'admin-admin@gmail.com' ? 'add-game-stats' : '/game-stats'} />
                 </Grid>
               )
             })}
