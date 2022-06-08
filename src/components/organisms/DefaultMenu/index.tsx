@@ -46,7 +46,7 @@ export default function DefaultMenu(): JSX.Element {
     removeJWTBearerToken()
   }
 
-  const addStatsPage = user && user.email === 'admin-admin@gmail.com' ? <DefaultMenuTitle  title='Add Statistic game' isHighlighted={'/all-games' === router.pathname} link='/all-games' /> : null
+  const addStatsPage = user && user.email === 'admin-admin@gmail.com' ? <DefaultMenuTitle title='Add Statistic game' isHighlighted={'/all-games' === router.pathname} link='/all-games' /> : null
 
   return (
     <Container maxWidth="xl">
@@ -59,7 +59,7 @@ export default function DefaultMenu(): JSX.Element {
       >
         <Grid
           item
-          xs={6}
+          xs={8}
           sx={{
             zIndex: 1
           }}

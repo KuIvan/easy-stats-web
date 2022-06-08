@@ -1,10 +1,9 @@
 import Head from 'next/head'
 // src
-import DefaultLayout from 'src/components/templates/DefaultLayout'
-import MyTeamsPage from 'src/components/pages/MyTeamsPage'
 import { Children } from 'src/types'
+import TournamentsPage from 'src/components/pages/TournamentsPage'
 
-export default function Teams(): JSX.Element {
+export default function Tournaments(): JSX.Element {
   return (
     <>
       <Head>
@@ -12,12 +11,12 @@ export default function Teams(): JSX.Element {
         <meta name="description" content="Solution for generate football stats"/>
       </Head>
 
-      <MyTeamsPage/>
+      <TournamentsPage/>
     </>
   )
 }
 
-Teams.getLayout = function getLayout(page: Children) {
+Tournaments.getLayout = function getLayout(page: Children) {
   return (
     <>
       {page}

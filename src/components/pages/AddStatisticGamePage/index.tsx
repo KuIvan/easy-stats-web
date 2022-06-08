@@ -1,6 +1,6 @@
 import React, { ChangeEvent, MouseEventHandler, useEffect, useState } from 'react'
 import {
-  Button,
+  Button, CircularProgress,
   FormControl,
   Grid,
   InputLabel, Link,
@@ -267,7 +267,9 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
                 <Grid item xs={10} key={currentAction.id} marginTop='8.9%'>
                   <Button
                     variant='outlined'
-                    onClick={() => {deleteRecord(currentAction.id)}}
+                    onClick={() => {
+                      deleteRecord(currentAction.id)
+                    }}
                     fullWidth
                     style={{ height: '80%' }}
                   >

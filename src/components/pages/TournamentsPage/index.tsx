@@ -1,11 +1,15 @@
 import React from 'react'
-import { Button, Grid, Link } from '@mui/material'
-//src
-import useCurrentUser from 'src/components/molecules/useCurrentUser'
+import { Button, CircularProgress, Grid, Link } from '@mui/material'
+// src
 import NoAccess from 'src/components/pages/NoAccesPage'
+import useCurrentUser from 'src/components/molecules/useCurrentUser'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 
-export default function MyTeamsPage(): JSX.Element {
+type Props = {
+  userId?: string | string[],
+};
+
+export default function TournamentsPage({ userId }: Props): JSX.Element {
 
   if (useCurrentUser() === undefined) {
     return <NoAccess/>
@@ -14,7 +18,7 @@ export default function MyTeamsPage(): JSX.Element {
       <Grid sx={{ marginTop: 10 }}>
         <Grid item>
           <Grid container justifyContent='center'>
-            <DefaultLandingTitle title='In developing' />
+            <DefaultLandingTitle title='In developing'/>
           </Grid>
         </Grid>
         <Grid item marginTop={10}>
@@ -28,3 +32,4 @@ export default function MyTeamsPage(): JSX.Element {
     )
   }
 }
+

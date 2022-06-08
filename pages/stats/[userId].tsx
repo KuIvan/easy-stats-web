@@ -21,9 +21,9 @@ export default function Stats(): JSX.Element {
 
 Stats.getLayout = function getLayout(page: Children) {
   return (
-    <DefaultLayout>
+    <>
       {page}
-    </DefaultLayout>
+    </>
   )
 }
 

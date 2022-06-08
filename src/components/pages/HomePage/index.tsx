@@ -13,11 +13,7 @@ export default function HomePage(): JSX.Element {
     return <NoAccess/>
   } else {
     if(user === 'admin-admin@gmail.com') {
-      return (
-        <Grid container justifyContent='center'>
-          <Typography variant='h2' color='#EE9E20'>Welcome, Admin</Typography>
-        </Grid>
-        )
+      return <></>
     } else {
       return (
         <Grid sx={{ marginTop: 10 }}>
