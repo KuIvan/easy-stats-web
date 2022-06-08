@@ -36,7 +36,7 @@ export default function GameCard({ game }: GameCardProps): JSX.Element {
       }
       }
     >
-      <Link passHref href={`/games/${game.id}`}>
+      <Link passHref href={`/game-stats/${game.id}`}>
         <a>
           <Grid
             container
