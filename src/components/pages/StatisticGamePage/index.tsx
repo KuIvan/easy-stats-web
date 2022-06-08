@@ -6,9 +6,10 @@ import { map } from 'lodash'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import { GET_GAME_DATA } from 'src/graphql/queries/game'
 import useCurrentUser from 'src/components/molecules/useCurrentUser'
-import image from '/public/icons/default/logo2-1.png'
 import setTeamPicture from 'src/utils/TeamPicture'
-// import NoAccess from 'src/components/pagesNoAccesPage'
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import HdrAutoIcon from '@mui/icons-material/HdrAuto';
+import RectangleIcon from '@mui/icons-material/Rectangle';
 
 type TeamNameType = {
   name: string
@@ -32,6 +33,10 @@ type SeasonPlayerType = {
 type PlayerType = {
   id: number
   seasonsSquadsPlayer: SeasonPlayerType
+  goalsCount: number
+  assistCount: number
+  yellowCardCount: number
+  redCardCount: number
 }
 
 type SeasonsSquad = {
@@ -116,11 +121,36 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
                   return (
                     <Grid item xs={12} key={player.id}>
                       <Grid container justifyContent='end'>
-                        <Link href={`/user-stats/${player.seasonsSquadsPlayer?.teamsPlayer.user.id}`}>
-                          <Typography
-                            variant='h5'>{player.seasonsSquadsPlayer?.teamsPlayer.user.fullName} {player.seasonsSquadsPlayer?.teamsPlayer.number}
-                          </Typography>
-                        </Link>
+                          <Link href={`/user-stats/${player.seasonsSquadsPlayer?.teamsPlayer.user.id}`}>
+                            <Typography variant='h5'>
+                              {player.seasonsSquadsPlayer?.teamsPlayer.user.fullName} {player.seasonsSquadsPlayer?.teamsPlayer.number}
+                            </Typography>
+                          </Link>
+                        </Grid>
+                      <Grid container justifyContent='end'>
+                        <Grid item xs={8}>
+                          <Grid container spacing={2} justifyContent='end'>
+                            <Grid item xs={2}>
+                              <Typography fontSize={16}>
+                                <SportsSoccerIcon /> {player.goalsCount ? player.goalsCount : 0}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Typography  fontSize={16}>
+                                <HdrAutoIcon /> {player.assistCount ? player.assistCount : 0}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Typography  fontSize={16}>
+                                <RectangleIcon style={{ color: '#EE9E20'}} /> {player.yellowCardCount ? player.yellowCardCount : 0}</Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Typography  fontSize={16}>
+                                <RectangleIcon style={{ color: 'red'}} /> {player.redCardCount ? player.redCardCount : 0}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>
                       </Grid>
                     </Grid>
                   )
@@ -132,11 +162,38 @@ export default function StatisticGamePage({ gameId }: StatisticGamePageProps) {
                 {map(guest?.gamesSquadsPlayer, function (player: PlayerType) {
                   return (
                     <Grid item xs={12} key={player.id}>
-                      <Link href={`/user-stats/${player.seasonsSquadsPlayer?.teamsPlayer.user.id}`}>
-                        <Typography
-                          variant='h5'>{player.seasonsSquadsPlayer?.teamsPlayer.number} {player.seasonsSquadsPlayer?.teamsPlayer.user.fullName}
-                        </Typography>
-                      </Link>
+                      <Grid container>
+                        <Link href={`/user-stats/${player.seasonsSquadsPlayer?.teamsPlayer.user.id}`}>
+                          <Typography variant='h5'>
+                            {player.seasonsSquadsPlayer?.teamsPlayer.user.fullName} {player.seasonsSquadsPlayer?.teamsPlayer.number}
+                          </Typography>
+                        </Link>
+                      </Grid>
+                      <Grid container>
+                        <Grid item xs={8}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={2}>
+                              <Typography fontSize={16}>
+                                <SportsSoccerIcon /> {player.goalsCount ? player.goalsCount : 0}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Typography  fontSize={16}>
+                                <HdrAutoIcon  /> {player.assistCount ? player.assistCount : 0}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Typography  fontSize={16}>
+                                <RectangleIcon style={{ color: '#EE9E20'}} /> {player.yellowCardCount ? player.yellowCardCount : 0}</Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Typography  fontSize={16}>
+                                <RectangleIcon style={{ color: 'red'}} /> {player.redCardCount ? player.redCardCount : 0}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   )
                 })}

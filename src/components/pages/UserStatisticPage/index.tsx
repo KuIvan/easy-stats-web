@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Button, Grid, Link, Typography } from '@mui/material'
 import { useQuery } from '@apollo/client'
 //src
 import useCurrentUser from 'src/components/molecules/useCurrentUser'
@@ -7,11 +7,14 @@ import NoAccess from 'src/components/pages/NoAccesPage'
 import { GET_USER_STATISTICS_DATA } from 'src/graphql/queries/user'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import setTeamPicture from 'src/utils/TeamPicture'
-import { FETCH_GOAL_ACTIONS_DATA } from 'src/graphql/queries/action/goalActions'
+import { GET_ALL_USER_GOALS_DATA } from 'src/graphql/queries/action/goalActions'
 
 type ActionType = {
-  id: number
-  scope: string
+  gamesCount: number
+  goalsCount: number
+  assistsCount: number
+  yellowCardsCount: number
+  redCardsCount: number
 }
 
 type TeamType = {
@@ -40,7 +43,7 @@ interface StatisticUserPageProps {
 export default function UserStatisticPage({ userId }: StatisticUserPageProps): JSX.Element {
 
   const [user, setUser] = useState<UserType | null>(null)
-  const [actions, setActions] = useState<object[]>([])
+  const [actions, setActions] = useState<ActionType | null>(null)
 
   const { loading: loadUser, error: errorUser, data: dataGetUser } = useQuery(GET_USER_STATISTICS_DATA, {
       variables: {
@@ -49,19 +52,15 @@ export default function UserStatisticPage({ userId }: StatisticUserPageProps): J
     }
   )
 
-  const { loading: loadGoal, error: errorGoal, data: dataGoals } = useQuery(FETCH_GOAL_ACTIONS_DATA, {
+  const { loading: loadGoal, error: errorGoal, data: dataGoals } = useQuery(GET_ALL_USER_GOALS_DATA, {
     variables: {
-      userId: userId,
-      goals: true,
-      assist: true,
-      redCard: true,
-      yellowCard: true
+      userId: userId
     }
   })
 
   useEffect(() => {
     setUser(dataGetUser?.getUser)
-    setActions(dataGoals?.fetchGoalActions)
+    setActions(dataGoals?.getAllUserGoals)
   }, [loadUser, loadGoal])
 
   if (useCurrentUser() === undefined) {
@@ -75,7 +74,7 @@ export default function UserStatisticPage({ userId }: StatisticUserPageProps): J
         sx={{ marginTop: 10 }}
       >
         <Grid item xs={12}>
-          <DefaultLandingTitle title={`User Statistic`}/>
+          <DefaultLandingTitle title={`User Statistic for ${user?.teamsPlayers[0]?.team.name}`}/>
         </Grid>
         <Grid item xs={12}>
           <Grid
@@ -96,15 +95,54 @@ export default function UserStatisticPage({ userId }: StatisticUserPageProps): J
               </Grid>
             </Grid>
             <Grid item xs={1}>
-              <img alt='team-logo' src={setTeamPicture(user?.teamsPlayers[0]?.team.name)} style={{ width: 150, borderRadius: '30%'}} />
+              <img alt='team-logo' src={setTeamPicture(user?.teamsPlayers[0]?.team.name)}
+                   style={{ width: 150, borderRadius: '30%' }}/>
             </Grid>
           </Grid>
         </Grid>
-          <Grid item xs={12}>
-            <Grid container justifyContent='center'>
-              <Typography variant='h4' color='#EE9E20'>Goals: {actions?.length}</Typography>
+        <Grid item xs={12}>
+          <Grid container justifyContent='center' spacing={10}>
+
+            <Grid item xs={12}>
+              <Grid container justifyContent='center'>
+                <Typography variant='h4' color='#093272'>Games: {actions?.gamesCount}</Typography>
+              </Grid>
+            </Grid>
+            <Grid item xs={5}>
+              <Grid container spacing={5}>
+                <Grid item xs={12}>
+                  <Grid container justifyContent='end'>
+                    <Typography variant='h4' color='#093272'>Goals: {actions?.goalsCount}</Typography>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container justifyContent='end'>
+                  <Typography variant='h4' color='#EE9E20'>Assists: {actions?.assistsCount}</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={5}>
+              <Grid container spacing={5}>
+                <Grid item xs={12}>
+                  <Typography variant='h4' color='#EE9E20'>Yellow Card: {actions?.yellowCardsCount}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h4' color='#093272'>Red Card: {actions?.redCardsCount}</Typography>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Grid container justifyContent='center'>
+            <Link href='/home'>
+              <Button variant='outlined'>Home</Button>
+            </Link>
+          </Grid>
+        </Grid>
       </Grid>
     )
   }

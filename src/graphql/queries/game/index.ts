@@ -45,6 +45,10 @@ export const GET_GAME_DATA = gql`
         }
         gamesSquadsPlayer {
           id
+          goalsCount
+          assistCount
+          redCardCount
+          yellowCardCount
           seasonsSquadsPlayer {
            id 
            teamsPlayer {
