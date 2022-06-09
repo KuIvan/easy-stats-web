@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Grid, Link } from '@mui/material'
+import { Button, CircularProgress, Grid, Link } from '@mui/material'
 import { map } from 'lodash'
 import { useQuery } from '@apollo/client'
 //src
@@ -17,6 +17,7 @@ type GameType = {
 
 export default function AllGamesPage(): JSX.Element {
 
+  const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
   const [games, setGames] = useState<GameType[]>([])
 
   const { loading, error, data } = useQuery(FETCH_ALL_GAMES_DATA, {
@@ -32,42 +33,54 @@ export default function AllGamesPage(): JSX.Element {
     setGames(data?.fetchAllGames)
   }, [loading, data?.fetchAllGames])
 
-  const user = useCurrentUser()
-
-  if (user === undefined) {
-    return <NoAccess/>
-  } else {
+  if (loadingCurrentUser) {
     return (
       <Grid
         container
-        spacing={2}
         justifyContent='center'
-        sx={{ marginTop: 10 }}
+        alignItems='center'
+        style={{ height: '80vh'}}
       >
-        <Grid item xs={12}>
-          <DefaultLandingTitle title={`All Games`}/>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Link href='/home'>
-            <Grid container justifyContent='center'>
-              <Button variant='outlined'>Home</Button>
-            </Grid>
-          </Link>
-        </Grid>
-        <Grid item xs={8}>
-          <Grid container justifyContent='center'>
-            {map(games, function (game) {
-              return (
-                <Grid item xs={12}>
-                  <GameList game={game} link={ user === 'admin-admin@gmail.com' ? 'add-game-stats' : '/game-stats'} />
-                </Grid>
-              )
-            })}
-          </Grid>
-        </Grid>
-
+        <CircularProgress/>
       </Grid>
     )
+  } else {
+    if (userEmail === undefined) {
+      return <NoAccess/>
+    } else {
+      return (
+        <Grid
+          container
+          spacing={2}
+          justifyContent='center'
+          sx={{ marginTop: 10 }}
+        >
+          <Grid item xs={12}>
+            <DefaultLandingTitle title={`All Games`}/>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Link href='/home'>
+              <Grid container justifyContent='center'>
+                <Button variant='outlined'>Home</Button>
+              </Grid>
+            </Link>
+          </Grid>
+          <Grid item xs={8}>
+            <Grid container justifyContent='center'>
+              {map(games, function (game) {
+                return (
+                  <Grid item xs={12}>
+                    <GameList game={game}
+                              link={userEmail === 'admin-admin@gmail.com' ? '/add-game-stats' : '/game-stats'}/>
+                  </Grid>
+                )
+              })}
+            </Grid>
+          </Grid>
+
+        </Grid>
+      )
+    }
   }
 }

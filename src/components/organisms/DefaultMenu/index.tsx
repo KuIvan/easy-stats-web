@@ -22,6 +22,7 @@ type UserType = {
 
 export default function DefaultMenu(): JSX.Element {
 
+  const { userEmail, loading: loadingUser} = useCurrentUser()
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
   const [user, setUser] = useState<UserType | null>(null)
@@ -68,15 +69,21 @@ export default function DefaultMenu(): JSX.Element {
             container
             spacing={2}
           >
-            {map(menuItems, (item, index) => (
-              <Grid item xs={12} key={index}>
-                <DefaultMenuTitle
-                  title={item.title}
-                  isHighlighted={item.link === router.pathname}
-                  link={item.link}
-                />
-              </Grid>
-            ))}
+            {map(menuItems, (item, index) => {
+              if (userEmail === 'admin-admin@gmail.com' && (item.title === "My Teams (In Developing)" || item.title === "My Games")) {
+                return null
+              } else {
+                return(
+                  <Grid item xs={12} key={index}>
+                    <DefaultMenuTitle
+                      title={item.title}
+                      isHighlighted={item.link === router.pathname}
+                      link={item.link}
+                    />
+                  </Grid>
+                )
+              }
+            })}
           </Grid>
 
           <Grid item xs={12}>
@@ -84,7 +91,7 @@ export default function DefaultMenu(): JSX.Element {
           </Grid>
 
           <Grid item xs={12} onClick={signOut}>
-            {useCurrentUser() != undefined ? <DefaultMenuTitle  title='Sign Out' isHighlighted={'/' === router.pathname} link='/' /> : <DefaultMenuTitle  title='Sign In' isHighlighted={'/' === router.pathname} link='/' />}
+            {userEmail != undefined ? <DefaultMenuTitle  title='Sign Out' isHighlighted={'/' === router.pathname} link='/' /> : <DefaultMenuTitle  title='Sign In' isHighlighted={'/' === router.pathname} link='/' />}
           </Grid>
 
         </Grid>

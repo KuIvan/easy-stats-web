@@ -11,5 +11,8 @@ export default function useCurrentUser() {
   setUserEmail(data?.getCurrentUser.email)
  }, [loading, data?.getCurrentUser.email])
 
- return userEmail
+ return {
+  userEmail,
+  loading,
+ }
 }

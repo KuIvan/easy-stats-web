@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEventHandler, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import {
   Button, CircularProgress,
   FormControl,
@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import { useQuery, useMutation } from '@apollo/client'
 import { get, map } from 'lodash'
+import { useSnackbar } from 'notistack'
 //src
 import TableStats from 'src/components/molecules/TableStats'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
@@ -19,7 +20,6 @@ import FormControlStats from 'src/components/atoms/FormControlStats'
 import { GET_GAME_DATA } from 'src/graphql/queries/game';
 import { ADD_ACTION } from 'src/graphql/mutation/action/AddAction'
 import { REMOVE_ACTION } from 'src/graphql/mutation/action/RemoveAction'
-import { useSnackbar } from 'notistack'
 import { validateAuthErrors } from 'src/utils/parseUtils/error'
 import useCurrentUser from 'src/components/molecules/useCurrentUser'
 import NoAccess from 'src/components/pages/NoAccesPage'
@@ -61,6 +61,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   const [teamChoose, setTeamChoose] = useState<string>('')
   const [successfulValue, setSuccessfulValue] = useState<boolean>(true)
   const { enqueueSnackbar } = useSnackbar()
+
+  const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
 
   const { loading, error, data, refetch } = useQuery(GET_GAME_DATA, {
     variables: {
@@ -187,107 +189,122 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
 
   function newSelectInput() {
     handleAction()
-    setAction('')
-    setPlayerFirst(null)
-    setPlayerSecond(null)
-    setSuccessfulValue(true)
+      .then(res => {
+      setAction('')
+      setPlayerFirst(null)
+      setPlayerSecond(null)
+      setSuccessfulValue(true)
+    })
     setTimeout(refetch, 500)
   }
 
   const chooseTeam = (event: SelectChangeEvent) => {
     setTeamChoose(event.target.value as string);
-  };
+  }
 
-  if (useCurrentUser() != 'admin-admin@gmail.com') {
-    return <NoAccess/>
-  } else {
+  if (loadingCurrentUser) {
     return (
       <Grid
         container
-        spacing={5}
         justifyContent='center'
-        sx={{ marginTop: 10 }}
+        alignItems='center'
+        style={{ height: '80vh'}}
       >
-        <Grid item xs={12}>
-          <DefaultLandingTitle title={`Add statistic for game ${gameId}`}/>
-        </Grid>
+        <CircularProgress/>
+      </Grid>
+    )
+  } else {
+    if (userEmail != 'admin-admin@gmail.com') {
+      return <NoAccess/>
+    } else {
+      return (
+        <Grid
+          container
+          spacing={5}
+          justifyContent='center'
+          sx={{ marginTop: 10 }}
+        >
+          <Grid item xs={12}>
+            <DefaultLandingTitle title={`Add statistic for game ${gameId}`}/>
+          </Grid>
 
-        <Grid item xs={2}>
-          <FormControl fullWidth>
-            <InputLabel>Choose your Team</InputLabel>
-            <Select
-              label='Choose your Team'
-              onChange={chooseTeam}
+          <Grid item xs={2}>
+            <FormControl fullWidth>
+              <InputLabel>Choose your Team</InputLabel>
+              <Select
+                label='Choose your Team'
+                onChange={chooseTeam}
+              >
+                <MenuItem value='team-1'>Team #1</MenuItem>
+                <MenuItem value='team-2'>Team #2</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid
+              container
+              spacing={2}
+              justifyContent='center'
             >
-              <MenuItem value='team-1'>Team #1</MenuItem>
-              <MenuItem value='team-2'>Team #2</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
+              {map(formStatistic, function (form: FormType) {
+                return (
+                  <Grid item xs={2} key={form.id}>
+                    {loading ? <Skeleton animation="wave" height='100%' variant="rectangular"/> :
+                      <FormControlStats form={form} onChangeFunc={handleChange}/>}
+                  </Grid>
+                )
 
-        <Grid item xs={12}>
-          <Grid
-            container
-            spacing={2}
-            justifyContent='center'
-          >
-            {map(formStatistic, function (form: FormType) {
-              return (
-                <Grid item xs={2} key={form.id}>
-                  {loading ? <Skeleton animation="wave" height='100%' variant="rectangular"/> :
-                    <FormControlStats form={form} onChangeFunc={handleChange}/>}
+              })}
+              <Grid item xs={12}>
+                <Grid container justifyContent='center'>
+                  <ButtonForm
+                    onClickFunc={newSelectInput}
+                    disabled={(!playerFirst || !action) || (playerFirst === playerSecond)}
+                    value='Add Record'
+                    variable={actionsPresent}
+                  />
                 </Grid>
-              )
-
-            })}
-            <Grid item xs={12}>
-              <Grid container justifyContent='center'>
-                <ButtonForm
-                  onClickFunc={newSelectInput}
-                  disabled={(!playerFirst || !action) || (playerFirst === playerSecond)}
-                  value='Add Record'
-                  variable={actionsPresent}
-                />
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-        <Grid item xs={4}>
-          <TableStats
-            rows={actionsPresent}
-            rowName={['№', 'Initiator', 'action', 'Addressable', 'Successful']}
-          />
-        </Grid>
+          <Grid item xs={4}>
+            <TableStats
+              rows={actionsPresent}
+              rowName={['№', 'Initiator', 'action', 'Addressable', 'Successful']}
+            />
+          </Grid>
 
-        <Grid item xs={1}>
-          <Grid container marginTop='4.6vh'>
-            {map(actionsPresent, function (currentAction: ActionType) {
-              return (
-                <Grid item xs={10} key={currentAction.id} marginTop='8.9%'>
-                  <Button
-                    variant='outlined'
-                    onClick={() => {
-                      deleteRecord(currentAction.id)
-                    }}
-                    fullWidth
-                    style={{ height: '80%' }}
-                  >
-                    Delete
-                  </Button>
-                </Grid>
-              )
-            })}
+          <Grid item xs={1}>
+            <Grid container marginTop='4vh'>
+              {map(actionsPresent, function (currentAction: ActionType) {
+                return (
+                  <Grid item xs={10} key={currentAction.id} marginTop='9.4%'>
+                    <Button
+                      variant='outlined'
+                      onClick={() => {
+                        deleteRecord(currentAction.id)
+                      }}
+                      fullWidth
+                      style={{ height: '80%' }}
+                    >
+                      Delete
+                    </Button>
+                  </Grid>
+                )
+              })}
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Link href='/home'>
+              <Grid container justifyContent='center'>
+                <Button variant='outlined'>Home</Button>
+              </Grid>
+            </Link>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Link href='/home'>
-            <Grid container justifyContent='center'>
-              <Button variant='outlined'>Home</Button>
-            </Grid>
-          </Link>
-        </Grid>
-      </Grid>
-    )
+      )
+    }
   }
 }
