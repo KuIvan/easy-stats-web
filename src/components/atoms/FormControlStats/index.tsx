@@ -28,16 +28,14 @@ export default function FormControlStats({
         label={form.label}
         onChange={(event: any) => onChangeFunc(event, form.setValue)}
       >
-        {map(form.menuItems, function(item: any) {
-          return(
-            <MenuItem
-              key={item.id}
-              value={( form.id != 0 && form.id != 3) ? item.seasonsSquadsPlayer.teamsPlayer : item.value}
-            >
-              {( form.id != 0 && form.id != 3) ? item.seasonsSquadsPlayer.teamsPlayer.user.fullName : item.label}
-            </MenuItem>
-          )}
-        )}
+        {map(form.menuItems, (item: any) => (
+          <MenuItem
+            key={item.id}
+            value={item.seasonsSquadsPlayer?.teamsPlayer || item.value}
+          >
+            {item.seasonsSquadsPlayer?.teamsPlayer.user.fullName || item.label}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   )

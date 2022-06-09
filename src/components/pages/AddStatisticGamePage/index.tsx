@@ -17,14 +17,14 @@ import TableStats from 'src/components/molecules/TableStats'
 import DefaultLandingTitle from 'src/components/atoms/DefaultLandingTitle'
 import ButtonForm from 'src/components/atoms/ButtonForm'
 import FormControlStats from 'src/components/atoms/FormControlStats'
-import { GET_GAME_DATA } from 'src/graphql/queries/game';
+import { GET_GAME_DATA } from 'src/graphql/queries/game'
 import { ADD_ACTION } from 'src/graphql/mutation/action/AddAction'
 import { REMOVE_ACTION } from 'src/graphql/mutation/action/RemoveAction'
 import { validateAuthErrors } from 'src/utils/parseUtils/error'
 import useCurrentUser from 'src/components/molecules/useCurrentUser'
 import NoAccess from 'src/components/pages/NoAccesPage'
 
-type PlayerType = {
+type  PlayerType = {
   id: number
   fullName: string
   number: number
@@ -51,18 +51,18 @@ interface AddStatisticPageProps {
 }
 
 export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
+  const { enqueueSnackbar } = useSnackbar()
+  const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
+
+  const [teamChoose, setTeamChoose] = useState<string>('')
 
   const [playerFirst, setPlayerFirst] = useState<PlayerType | null>(null)
   const [playerSecond, setPlayerSecond] = useState<PlayerType | null>(null)
   const [action, setAction] = useState<string>('')
-  const [menuItemsPlayerFirst, setMenuItemsPlayerFirst] = useState<any>(0)
-  const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<any>(0)
-  const [actionsPresent, setActionsPresent] = useState<ActionType | null>(null)
-  const [teamChoose, setTeamChoose] = useState<string>('')
+  const [menuItemsPlayerFirst, setMenuItemsPlayerFirst] = useState<PlayerType | null>(null)
+  const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<PlayerType | null  >(null)
+  const [actionsPresent, setActionsPresent] = useState<ActionType[]>([])
   const [successfulValue, setSuccessfulValue] = useState<boolean>(true)
-  const { enqueueSnackbar } = useSnackbar()
-
-  const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
 
   const { loading, error, data, refetch } = useQuery(GET_GAME_DATA, {
     variables: {
@@ -117,27 +117,35 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   }
 
   useEffect(() => {
-    if (teamChoose === 'team-1') {
+    const isAction = ['red_card', 'yellow_card', 'foul', 'steal', 'interception', 'dribbling'].includes(action)
+
+    if (teamChoose === 'host') {
       setMenuItemsPlayerFirst(data?.getGame.gamesSquads[0].gamesSquadsPlayer)
-      if (action === 'red_card' || action === 'yellow_card' || action === 'foul' || action === 'steal' || action === 'interception' || action === 'dribbling') {
+      if (isAction) {
         setMenuItemsPlayerSecond(data?.getGame.gamesSquads[1].gamesSquadsPlayer)
       } else {
         setMenuItemsPlayerSecond(data?.getGame.gamesSquads[0].gamesSquadsPlayer)
       }
     } else {
       setMenuItemsPlayerFirst(data?.getGame.gamesSquads[1].gamesSquadsPlayer)
-      if (action === 'red_card' || action === 'yellow_card' || action === 'foul' || action === 'steal' || action === 'interception' || action === 'dribbling') {
+      if (isAction) {
         setMenuItemsPlayerSecond(data?.getGame.gamesSquads[0].gamesSquadsPlayer)
       } else {
         setMenuItemsPlayerSecond(data?.getGame.gamesSquads[1].gamesSquadsPlayer)
       }
     }
     setActionsPresent(data?.getGame.actions)
-  }, [data, action, teamChoose, actionsPresent])
+  }, [data, action, teamChoose])
 
   function handleChange(_event: ChangeEvent<{}>, setValue: any): void {
     setValue((_event.target as HTMLTextAreaElement).value)
     refetch()
+      .then(
+
+      )
+      .catch(
+
+      )
   }
 
   const formStatistic = [
@@ -190,11 +198,11 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   function newSelectInput() {
     handleAction()
       .then(res => {
-      setAction('')
-      setPlayerFirst(null)
-      setPlayerSecond(null)
-      setSuccessfulValue(true)
-    })
+        setAction('')
+        setPlayerFirst(null)
+        setPlayerSecond(null)
+        setSuccessfulValue(true)
+      })
     setTimeout(refetch, 500)
   }
 
@@ -208,7 +216,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
         container
         justifyContent='center'
         alignItems='center'
-        style={{ height: '80vh'}}
+        style={{ height: '80vh' }}
       >
         <CircularProgress/>
       </Grid>
@@ -235,8 +243,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
                 label='Choose your Team'
                 onChange={chooseTeam}
               >
-                <MenuItem value='team-1'>Team #1</MenuItem>
-                <MenuItem value='team-2'>Team #2</MenuItem>
+                <MenuItem value='host'>Host</MenuItem>
+                <MenuItem value='guest'>Guest</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -247,14 +255,15 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
               spacing={2}
               justifyContent='center'
             >
-              {map(formStatistic, function (form: FormType) {
+              {map(formStatistic,(form: FormType) => {
                 return (
                   <Grid item xs={2} key={form.id}>
-                    {loading ? <Skeleton animation="wave" height='100%' variant="rectangular"/> :
-                      <FormControlStats form={form} onChangeFunc={handleChange}/>}
+                    {loading
+                      ? <Skeleton animation="wave" height='100%' variant="rectangular"/>
+                      : <FormControlStats form={form} onChangeFunc={handleChange}/>
+                    }
                   </Grid>
                 )
-
               })}
               <Grid item xs={12}>
                 <Grid container justifyContent='center'>
@@ -272,30 +281,11 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
           <Grid item xs={4}>
             <TableStats
               rows={actionsPresent}
-              rowName={['№', 'Initiator', 'action', 'Addressable', 'Successful']}
+              rowsNames={['№', 'Initiator', 'action', 'Addressable', 'Successful', 'Delete']}
+              buttonFunc={deleteRecord}
             />
           </Grid>
 
-          <Grid item xs={1}>
-            <Grid container marginTop='4vh'>
-              {map(actionsPresent, function (currentAction: ActionType) {
-                return (
-                  <Grid item xs={10} key={currentAction.id} marginTop='9.4%'>
-                    <Button
-                      variant='outlined'
-                      onClick={() => {
-                        deleteRecord(currentAction.id)
-                      }}
-                      fullWidth
-                      style={{ height: '80%' }}
-                    >
-                      Delete
-                    </Button>
-                  </Grid>
-                )
-              })}
-            </Grid>
-          </Grid>
           <Grid item xs={12}>
             <Link href='/home'>
               <Grid container justifyContent='center'>

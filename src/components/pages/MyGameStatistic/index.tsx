@@ -27,8 +27,8 @@ interface AddStatisticPageProps {
 
 export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
 
-  const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
-  const [actionsPresent, setActionsPresent] = useState<ActionType | null>(null)
+  const { userEmail, loading: loadingCurrentUser } = useCurrentUser()
+  const [actionsPresent, setActionsPresent] = useState<ActionType[]>([])
 
   const { loading, error, data } = useQuery(FETCH_CURRENT_USER_ACTIONS_DATA, {
     variables: {
@@ -70,7 +70,7 @@ export default function MyGameStatistic({ gameId }: AddStatisticPageProps) {
           <Grid item xs={4}>
             <TableStats
               rows={actionsPresent}
-              rowName={['№', 'playerFirst', 'action', 'PlayerSecond', 'Successful']}
+              rowsNames={['№', 'playerFirst', 'action', 'PlayerSecond', 'Successful']}
             />
           </Grid>
 

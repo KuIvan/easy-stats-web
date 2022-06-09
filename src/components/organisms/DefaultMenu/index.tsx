@@ -22,32 +22,33 @@ type UserType = {
 
 export default function DefaultMenu(): JSX.Element {
 
-  const { userEmail, loading: loadingUser} = useCurrentUser()
+  const { userEmail, loading: loadingUser } = useCurrentUser()
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
   const [user, setUser] = useState<UserType | null>(null)
-
   const { loading, error, data } = useQuery(GET_CURRENT_USER_DATA)
 
   useEffect(() => {
     setUser(data?.getCurrentUser)
-  },[loading, data?.getCurrentUser])
+  }, [loading, data?.getCurrentUser])
 
   function signOut() {
     axiosClient.delete('/users/sign_out')
-      .then( response => {
+      .then(response => {
         enqueueSnackbar('Success', { variant: 'success' })
       })
       .catch(error => {
-      const errorObject = get(error, 'response.data.errors', false)
-      if (errorObject) {
-        enqueueSnackbar(validateAuthErrors(errorObject), { variant: 'error' })
-      }
-    })
+        const errorObject = get(error, 'response.data.errors', false)
+        if (errorObject) {
+          enqueueSnackbar(validateAuthErrors(errorObject), { variant: 'error' })
+        }
+      })
     removeJWTBearerToken()
   }
 
-  const addStatsPage = user && user.email === 'admin-admin@gmail.com' ? <DefaultMenuTitle title='Add Statistic game' isHighlighted={'/all-games' === router.pathname} link='/all-games' /> : null
+  const addStatsPage = user && user.email === 'admin-admin@gmail.com'
+    ? <DefaultMenuTitle title='Add Statistic game' isHighlighted={'/all-games' === router.pathname} link='/all-games'/>
+    : null
 
   return (
     <Container maxWidth="xl">
@@ -73,7 +74,7 @@ export default function DefaultMenu(): JSX.Element {
               if (userEmail === 'admin-admin@gmail.com' && (item.title === "My Teams (In Developing)" || item.title === "My Games")) {
                 return null
               } else {
-                return(
+                return (
                   <Grid item xs={12} key={index}>
                     <DefaultMenuTitle
                       title={item.title}
@@ -91,9 +92,11 @@ export default function DefaultMenu(): JSX.Element {
           </Grid>
 
           <Grid item xs={12} onClick={signOut}>
-            {userEmail != undefined ? <DefaultMenuTitle  title='Sign Out' isHighlighted={'/' === router.pathname} link='/' /> : <DefaultMenuTitle  title='Sign In' isHighlighted={'/' === router.pathname} link='/' />}
+            {userEmail
+              ? <DefaultMenuTitle title='Sign Out' isHighlighted={'/' === router.pathname} link='/'/>
+              : <DefaultMenuTitle title='Sign In' isHighlighted={'/' === router.pathname} link='/'/>
+            }
           </Grid>
-
         </Grid>
       </Grid>
     </Container>

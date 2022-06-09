@@ -1,12 +1,13 @@
 import React from 'react'
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from '@mui/material'
-import { map } from 'lodash'
+import { map, startCase, capitalize, get } from 'lodash'
 
 type ActionType = {
   id: number
@@ -17,44 +18,52 @@ type ActionType = {
 }
 
 interface TableStatsProps {
-  rowName: string[]
-  rows: ActionType | null
+  rows: ActionType[]
+  rowsNames: string[]
+  buttonFunc?: Function
 }
 
-export default function TableStats({rowName, rows}: TableStatsProps) {
+export default function TableStats({ rowsNames, rows, buttonFunc }: TableStatsProps) {
+
   return (
     <Table>
       <TableHead>
         <TableRow>
-          {map(rowName, function (name: string) {
-            return(
-              <TableCell key={name} align="left">{name}</TableCell>
-            )
-          })}
+          {map(rowsNames, (name: string) => <TableCell key={name} align="left">{name}</TableCell>)}
         </TableRow>
       </TableHead>
+
       <TableBody>
-        {map(rows, function (row: any, index: number) {
+        {map(rows, (row: any, index: number) => {
+          const initiatorPlayer = row.initiator.seasonsSquadsPlayer.teamsPlayer
+          const addressablePlayer = get(row.addressable, 'seasonsSquadsPlayer.teamsPlayer', null)
+
           return (
             <TableRow key={row.id}>
               <TableCell align="left">{index + 1}</TableCell>
-              <TableCell align="left">{row.initiator.seasonsSquadsPlayer.teamsPlayer.number} {row.initiator.seasonsSquadsPlayer.teamsPlayer.user.fullName}</TableCell>
-              <TableCell align="left">
-                {(
-                row.scope === 'key_pass' && 'Key pass' ||
-                row.scope === 'losing_the_ball' && 'Losing the Ball' ||
-                row.scope === 'red_card' && 'Red Card' ||
-                row.scope === 'yellow_card' && 'Yellow_card' ||
-                row.scope === 'position_error' && 'Position Error' ||
-                row.scope === 'created_moment' && 'Created Moment') ||
-                row.scope
-                }
+
+              <TableCell
+                align="left">{[initiatorPlayer.number, initiatorPlayer.user.fullName].join(' ')}
               </TableCell>
-              <TableCell align="left">{row.addressable && row.addressable.seasonsSquadsPlayer.teamsPlayer.number} {row.addressable && row.addressable.seasonsSquadsPlayer.teamsPlayer.user.fullName}</TableCell>
-              <TableCell align="left">{row.isSuccessful ? 'True' : 'False'}</TableCell>
+
+              <TableCell align="left">
+                {startCase(row.scope)}
+              </TableCell>
+
+              <TableCell align="left">
+                {addressablePlayer && [addressablePlayer.number, addressablePlayer.user.fullName].join(' ')}
+              </TableCell>
+
+              <TableCell align="left">
+                {capitalize(Boolean(row.isSuccessful).toString())}
+              </TableCell>
+
+              <TableCell>
+                {(rowsNames[5] === 'Delete' && buttonFunc) && <Button onClick={() => {buttonFunc(row.id)}}>Delete</Button>}
+              </TableCell>
             </TableRow>
-          )}
-        )}
+          )
+        })}
       </TableBody>
     </Table>
   )
