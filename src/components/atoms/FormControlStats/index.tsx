@@ -31,7 +31,7 @@ export default function FormControlStats({
         {map(form.menuItems, (item: any) => (
           <MenuItem
             key={item.id}
-            value={item.seasonsSquadsPlayer?.teamsPlayer || item.value}
+            value={item.seasonsSquadsPlayer?.teamsPlayer.id|| item.value}
           >
             {item.seasonsSquadsPlayer?.teamsPlayer.user.fullName || item.label}
           </MenuItem>

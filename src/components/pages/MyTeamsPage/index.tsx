@@ -21,7 +21,7 @@ export default function MyTeamsPage(): JSX.Element {
       </Grid>
     )
   } else {
-    if (userEmail != 'admin-admin@gmail.com') {
+    if (userEmail !== 'admin-admin@gmail.com') {
       return <NoAccess/>
     } else {
       return (

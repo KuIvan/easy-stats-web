@@ -55,9 +55,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
   const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
 
   const [teamChoose, setTeamChoose] = useState<string>('')
-
-  const [playerFirst, setPlayerFirst] = useState<PlayerType | null>(null)
-  const [playerSecond, setPlayerSecond] = useState<PlayerType | null>(null)
+  const [playerFirst, setPlayerFirst] = useState<number | null>(null)
+  const [playerSecond, setPlayerSecond] = useState<number | null>(null)
   const [action, setAction] = useState<string>('')
   const [menuItemsPlayerFirst, setMenuItemsPlayerFirst] = useState<PlayerType | null>(null)
   const [menuItemsPlayerSecond, setMenuItemsPlayerSecond] = useState<PlayerType | null  >(null)
@@ -107,8 +106,8 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
     return handleElement(
       {
         variables: {
-          initiatorId: playerFirst?.id,
-          addressableId: playerSecond?.id,
+          initiatorId: playerFirst,
+          addressableId: playerSecond,
           scope: action,
           isSuccessful: successfulValue,
           gameId: gameId
@@ -148,6 +147,17 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       )
   }
 
+  function newSelectInput() {
+    handleAction()
+      .then(res => {
+        setAction('')
+        setPlayerFirst(null)
+        setPlayerSecond(null)
+        setSuccessfulValue(true)
+      })
+    setTimeout(refetch, 500)
+  }
+
   const formStatistic = [
     {
       id: 0,
@@ -176,14 +186,14 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       id: 1,
       label: 'Player #1',
       menuItems: menuItemsPlayerFirst,
-      value: playerFirst?.id,
+      value: playerFirst,
       setValue: setPlayerFirst
     },
     {
       id: 2,
       label: 'Player #2',
       menuItems: menuItemsPlayerSecond,
-      value: playerSecond?.id,
+      value: playerSecond,
       setValue: setPlayerSecond
     },
     {
@@ -194,17 +204,6 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       setValue: setSuccessfulValue
     },
   ]
-
-  function newSelectInput() {
-    handleAction()
-      .then(res => {
-        setAction('')
-        setPlayerFirst(null)
-        setPlayerSecond(null)
-        setSuccessfulValue(true)
-      })
-    setTimeout(refetch, 500)
-  }
 
   const chooseTeam = (event: SelectChangeEvent) => {
     setTeamChoose(event.target.value as string);
@@ -222,7 +221,7 @@ export default function AddStatisticPage({ gameId }: AddStatisticPageProps) {
       </Grid>
     )
   } else {
-    if (userEmail != 'admin-admin@gmail.com') {
+    if (userEmail !== 'admin-admin@gmail.com') {
       return <NoAccess/>
     } else {
       return (
