@@ -37,3 +37,21 @@ export const blocksAbout = [
     scrollY: 1087,
   },
 ]
+
+export const menuItemsAction = [
+  { id: 0, value: 'goal', label: 'Goal' },
+  { id: 1, value: 'assist', label: 'Assist' },
+  { id: 2, value: 'foul', label: 'Foul' },
+  { id: 4, value: 'shot', label: 'Shot' },
+  { id: 5, value: 'pass', label: 'Pass' },
+  { id: 6, value: 'key_pass', label: 'Key pass' },
+  { id: 7, value: 'dribbling', label: 'Dribbling' },
+  { id: 8, value: 'losing_the_ball', label: 'Losing The Ball' },
+  { id: 9, value: 'steal', label: 'Steal' },
+  { id: 10, value: 'interception', label: 'Interception' },
+  { id: 11, value: 'block', label: 'Block' },
+  { id: 12, value: 'position_error', label: 'Position Error' },
+  { id: 13, value: 'created_moment', label: 'Created Moment' },
+  { id: 14, value: 'yellow_card', label: 'Yellow Card' },
+  { id: 15, value: 'red_card', label: 'Red Card' }
+]

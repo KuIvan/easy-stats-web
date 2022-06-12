@@ -17,7 +17,7 @@ type GameType = {
 
 export default function AllGamesPage(): JSX.Element {
 
-  const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
+  const { user, loading: loadingCurrentUser } = useCurrentUser();
   const [games, setGames] = useState<GameType[]>([])
 
   const { loading, error, data } = useQuery(FETCH_ALL_GAMES_DATA, {
@@ -33,54 +33,38 @@ export default function AllGamesPage(): JSX.Element {
     setGames(data?.fetchAllGames)
   }, [loading, data?.fetchAllGames])
 
-  if (loadingCurrentUser) {
-    return (
-      <Grid
-        container
-        justifyContent='center'
-        alignItems='center'
-        style={{ height: '80vh'}}
-      >
-        <CircularProgress/>
+  return (
+    <Grid
+      container
+      spacing={2}
+      justifyContent='center'
+      sx={{ marginTop: 10 }}
+    >
+      <Grid item xs={12}>
+        <DefaultLandingTitle title={`All Games`}/>
       </Grid>
-    )
-  } else {
-    if (userEmail === undefined) {
-      return <NoAccess/>
-    } else {
-      return (
-        <Grid
-          container
-          spacing={2}
-          justifyContent='center'
-          sx={{ marginTop: 10 }}
-        >
-          <Grid item xs={12}>
-            <DefaultLandingTitle title={`All Games`}/>
-          </Grid>
 
-          <Grid item xs={12}>
-            <Link href='/home'>
-              <Grid container justifyContent='center'>
-                <Button variant='outlined'>Home</Button>
+      <Grid item xs={12}>
+        <Link href='/home'>
+          <Grid container justifyContent='center'>
+            <Button variant='outlined'>Home</Button>
+          </Grid>
+        </Link>
+      </Grid>
+      <Grid item xs={8}>
+        <Grid container justifyContent='center'>
+          {map(games, function (game) {
+            return (
+              <Grid item xs={12}>
+                <GameList game={game}
+                          link={user && user.email === 'admin-admin@gmail.com' ? '/add-game-stats' : '/game-stats'}/>
               </Grid>
-            </Link>
-          </Grid>
-          <Grid item xs={8}>
-            <Grid container justifyContent='center'>
-              {map(games, function (game) {
-                return (
-                  <Grid item xs={12}>
-                    <GameList game={game}
-                              link={userEmail === 'admin-admin@gmail.com' ? '/add-game-stats' : '/game-stats'}/>
-                  </Grid>
-                )
-              })}
-            </Grid>
-          </Grid>
-
+            )
+          })}
         </Grid>
-      )
-    }
-  }
+      </Grid>
+
+    </Grid>
+  )
 }
+

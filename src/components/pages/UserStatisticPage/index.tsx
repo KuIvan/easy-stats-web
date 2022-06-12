@@ -43,17 +43,17 @@ interface StatisticUserPageProps {
 export default function UserStatisticPage({ userId }: StatisticUserPageProps): JSX.Element {
 
   const [user, setUser] = useState<UserType | null>(null)
-  const { userEmail, loading: loadingCurrentUser } = useCurrentUser();
+  const { user: currentUser, loading: loadingCurrentUser } = useCurrentUser();
   const [actions, setActions] = useState<ActionType | null>(null)
 
-  const { loading: loadUser, error: errorUser, data: dataGetUser } = useQuery(GET_USER_STATISTICS_DATA, {
+  const { loading: loadUser, data: dataGetUser } = useQuery(GET_USER_STATISTICS_DATA, {
       variables: {
         id: userId
       }
     }
   )
 
-  const { loading: loadGoal, error: errorGoal, data: dataGoals } = useQuery(GET_ALL_USER_GOALS_DATA, {
+  const { loading: loadGoal, data: dataGoals } = useQuery(GET_ALL_USER_GOALS_DATA, {
     variables: {
       userId: userId
     }
@@ -76,7 +76,7 @@ export default function UserStatisticPage({ userId }: StatisticUserPageProps): J
       </Grid>
     )
   } else {
-    if (userEmail === undefined) {
+    if (!currentUser) {
       return <NoAccess/>
     } else {
       return (

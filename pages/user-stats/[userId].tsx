@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 //src
 import { Children } from 'src/types'
 import UserStatisticPage from 'src/components/pages/UserStatisticPage'
+import AccessLayout, { Roles } from 'src/components/templates/AccessLayout'
 
 export default function Stats(): JSX.Element {
 
@@ -16,9 +17,5 @@ export default function Stats(): JSX.Element {
 }
 
 Stats.getLayout = function getLayout(page: Children) {
-  return (
-    <>
-      {page}
-    </>
-  )
+  return <AccessLayout role={Roles.ADMIN}>{page}</AccessLayout>
 }

@@ -9,21 +9,13 @@ import {
 } from '@mui/material'
 import { map, startCase, capitalize, get } from 'lodash'
 
-type ActionType = {
-  id: number
-  initiator: object
-  addressable: object
-  scope: string
-  isSuccessful: boolean
-}
-
 interface TableStatsProps {
-  rows: ActionType[]
+  stats: string[]
   rowsNames: string[]
-  buttonFunc?: Function
+  onRemoveAction?: Function
 }
 
-export default function TableStats({ rowsNames, rows, buttonFunc }: TableStatsProps) {
+export default function TableStats({ rowsNames, stats, onRemoveAction }: TableStatsProps) {
 
   return (
     <Table>
@@ -34,7 +26,7 @@ export default function TableStats({ rowsNames, rows, buttonFunc }: TableStatsPr
       </TableHead>
 
       <TableBody>
-        {map(rows, (row: any, index: number) => {
+        {map(stats, (row: any, index: number) => {
           const initiatorPlayer = row.initiator.seasonsSquadsPlayer.teamsPlayer
           const addressablePlayer = get(row.addressable, 'seasonsSquadsPlayer.teamsPlayer', null)
 
@@ -59,7 +51,7 @@ export default function TableStats({ rowsNames, rows, buttonFunc }: TableStatsPr
               </TableCell>
 
               <TableCell>
-                {(rowsNames[5] === 'Delete' && buttonFunc) && <Button onClick={() => {buttonFunc(row.id)}}>Delete</Button>}
+                {(rowsNames[5] === 'Delete' && onRemoveAction) && <Button onClick={() => {onRemoveAction(row.id)}}>Delete</Button>}
               </TableCell>
             </TableRow>
           )

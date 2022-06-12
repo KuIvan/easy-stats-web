@@ -6,6 +6,7 @@ import apolloClient from 'src/lib/apolloClient'
 import { GET_USER_STATISTICS_DATA } from 'src/graphql/queries/user';
 import { Children } from 'src/types'
 import StatsPage from 'src/components/pages/StatsPage'
+import AccessLayout, { Roles } from 'src/components/templates/AccessLayout'
 
 export default function Stats(): JSX.Element {
 
@@ -20,11 +21,7 @@ export default function Stats(): JSX.Element {
 }
 
 Stats.getLayout = function getLayout(page: Children) {
-  return (
-    <>
-      {page}
-    </>
-  )
+  return <AccessLayout role={Roles.ADMIN}>{page}</AccessLayout>
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

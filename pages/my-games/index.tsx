@@ -2,6 +2,7 @@ import Head from 'next/head'
 // src
 import { Children } from 'src/types'
 import MyGamesPage from 'src/components/pages/MyGamesPage'
+import AccessLayout, { Roles } from 'src/components/templates/AccessLayout'
 
 export default function MyGames(): JSX.Element {
 
@@ -17,9 +18,5 @@ export default function MyGames(): JSX.Element {
 }
 
 MyGames.getLayout = function getLayout(page: Children) {
-  return (
-    <>
-      {page}
-    </>
-  )
+  return <AccessLayout role={Roles.ADMIN}>{page}</AccessLayout>
 }

@@ -1,8 +1,8 @@
 import Head from 'next/head'
 // src
-import DefaultLayout from 'src/components/templates/DefaultLayout'
 import MyTeamsPage from 'src/components/pages/MyTeamsPage'
 import { Children } from 'src/types'
+import AccessLayout, { Roles } from 'src/components/templates/AccessLayout'
 
 export default function Teams(): JSX.Element {
   return (
@@ -18,10 +18,5 @@ export default function Teams(): JSX.Element {
 }
 
 Teams.getLayout = function getLayout(page: Children) {
-  return (
-    <>
-      {page}
-    </>
-
-  )
+  return <AccessLayout role={Roles.ADMIN}>{page}</AccessLayout>
 }

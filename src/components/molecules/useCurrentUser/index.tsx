@@ -3,16 +3,22 @@ import { useQuery } from '@apollo/client'
 //src
 import { GET_CURRENT_USER_DATA } from 'src/graphql/queries/user/currentUser'
 
+type UserType = {
+ id: number
+ fullName: string
+ email: string
+}
+
 export default function useCurrentUser() {
- const [userEmail, setUserEmail] = useState()
+ const [user, setUser] = useState<UserType>()
  const { loading, data } = useQuery(GET_CURRENT_USER_DATA)
 
  useEffect(() => {
-  setUserEmail(data?.getCurrentUser.email)
- }, [loading, data?.getCurrentUser.email])
+  setUser(data?.getCurrentUser)
+ }, [loading, data?.getCurrentUser])
 
  return {
-  userEmail,
+  user,
   loading,
  }
 }
